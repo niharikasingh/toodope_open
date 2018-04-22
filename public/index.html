@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Too Dope</title>
+  <meta name="description" content="Law school outlines, by classmates, for classmates.">
+  <meta name="author" content="Neha Singh">
+  <meta name="google-signin-scope" content="profile email">
+  <meta name="google-signin-client_id" content="278291095930-07rv5urr6uaeepbj1bpkrlugp29hk7ps.apps.googleusercontent.com">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/search-custom.css">
+
+  <!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.ico">
+
+</head>
+
+<body>
+
+<div class="container" id="header">
+  <div class="row">
+    <div class="twelve columns">
+      <h1>too dope</h1>
+      <h5>Law school outlines, by classmates, for classmates.</h5>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row selector">
+    <div class="twelve columns" id="signin">
+      <div class="g-signin2" id="g-signin2" data-onsuccess="onSignIn" data-onfailure="onFailure"></div>
+      <script>
+      var auth2;
+
+      function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+
+        console.log("Email: " + profile.getEmail());
+
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/verifyToken');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+          if (xhr.responseText.indexOf("Not Harvard login.") == -1) {
+            console.log('Signed in as: ' + xhr.responseText);
+            window.location.replace("/search.html");
+          }
+          else {
+            auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut();
+          }
+        };
+        xhr.send('idtoken=' + id_token + "&email=" + profile.getEmail());
+        console.log("ID Token: " + id_token);
+      };
+      function onFailure(e) {
+        console.log(e);
+      }
+
+      // Analytics
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-90767777-1', 'auto');
+
+      ga('send', 'pageview');
+
+      </script>
+      <br>Use your Harvard e-mail account to sign in.
+    </div>
+  </div>
+</div>
+
+<div class = "container">
+  <div class = "row help">
+    <div class = "one column"></div>
+    <div class = "eleven columns">
+      <h5>Are you unable to sign in?</h5>
+      <ul>
+        <li>Make sure you're using your Harvard e-mail address</li>
+        <li><a href="http://www.enable-javascript.com/" target="_blank">Enable JavaScript</a></li>
+        <li>If you use a privacy blocker, add "toodope.org" to your list of trusted websites</li>
+        <li>E-mail admin@toodope.org for more help</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  positionHelp();
+  $(window).resize(function() {
+    positionHelp();
+  });
+  function positionHelp() {
+    var offset = 150 + $(".selector").height();
+      $(".help").css("margin-top", offset+"px");
+  }
+</script>
+
+<!-- End Document
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

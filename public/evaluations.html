@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Too Dope</title>
+  <meta name="description" content="Law school outlines, by classmates, for classmates.">
+  <meta name="author" content="Neha Singh">
+  <meta name="google-signin-scope" content="profile email">
+  <meta name="google-signin-client_id" content="278291095930-07rv5urr6uaeepbj1bpkrlugp29hk7ps.apps.googleusercontent.com">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/awesomplete.css">
+  <link rel="stylesheet" href="css/search-custom.css">
+  <!-- <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/> -->
+  <!-- <link rel="stylesheet" href="css/slick-theme.css"> -->
+  <!-- <link rel="stylesheet" href="css/modal.css"> -->
+
+  <!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="js/awesomplete.min.js"></script>
+<script src="js/constants.js"></script>
+<script src="js/evaluations.js"></script>
+<!-- <script src="js/modal.js" async defer></script> -->
+<script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.ico">
+
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row" id="userInfoBar">
+      <div class="twelve columns" id="userLogin"><div class="g-signin2 hide" id="g-signin2" data-onsuccess="onSignIn" data-onfailure="onFailure"></div>&nbsp;&nbsp;(<a href=# id="signout">Sign Out</a>)</div>
+    </div>
+  </div>
+
+ <hr class="hrrow">
+ <div class="container">
+   <div class="row">
+     <div class="twelve columns">
+       <nav>
+          <ul>
+            <a href="/search.html"><li>Outlines</li></a>
+            <li><u>Evaluations</u></li>
+            <a href="/textbooks.html"><li>Textbooks</li></a>
+            <a href="/registration.html"><li>✨Registration✨</li></a>
+            <a href="https://github.com/niharikasingh/toodope_open" target="_blank"><li><img src="images/github.png" style="height:15px; width: 15px;" /></li></a>
+          </ul>
+        <div class="handle">Menu</div>
+      </nav>
+    </div>
+   </div>
+ </div>
+ <hr class="hrrow">
+
+ <div class="attention">
+   <a href="http://ketchupduck.com/state-of-the-union-toodope.html" target="_blank">The First State of the Union of Toodope.org</a>
+   <p>461/1000 uploads on April 22, 2018</p>
+ </div>
+
+  <div class="container" id="header">
+    <div class="row">
+      <div class="twelve columns">
+        <h1><a href="/search.html">too dope</a></h1>
+        <h5>Law school outlines, by classmates, for classmates.</h5>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row selector">
+      <div class="six columns">
+        &nbsp;&nbsp;Course <br>
+        <input id="courseName" /> <br>
+      </div>
+      <div class="six columns">
+        &nbsp;&nbsp;Professor Last Name <br>
+        <input id="professorName" /> <br>
+      </div>
+      <div class="uploadOptions hide">
+        <select>
+          <option selected value=0>--Interaction--</option>
+          <option value=1 data-image="images/interactions1.svg">Cold calls</option>
+          <option value=2 data-image="images/interactions2.svg">Soft cold calls</option>
+          <option value=3 data-image="images/interactions3.svg">Volunteers</option>
+          <option value=4 data-image="images/interactions4.svg">Just lecture</option>
+          <option value=5 data-image="images/interactions5.svg">Panels</option>
+        </select>
+        <select>
+          <option selected value=0>--Feelings--</option>
+          <option value=1>Glad it's over</option>
+          <option value=2>Glad I took it</option>
+          <option value=3>My favorite course at HLS</option>
+          <option value=4>No strong feelings</option>
+        </select>
+        <select>
+          <option selected value=0>--Laptops--</option>
+          <option value=1>Laptops allowed</option>
+          <option value=2>Laptops not allowed</option>
+          <option value=3>Varies</option>
+        </select>
+        <select>
+          <option selected value=0>--Reading--</option>
+          <option value=1>Barely any</option>
+          <option value=2>Less than average</option>
+          <option value=3>About average</option>
+          <option value=4>On the high side</option>
+          <option value=5>Excessive</option>
+        </select>
+        <select>
+          <option selected value=0>--Exam--</option>
+          <option value=1>Simple</option>
+          <option value=2>Easier than normal</option>
+          <option value=3>About average</option>
+          <option value=4>Difficult</option>
+          <option value=5>Extremely frustrating</option>
+        </select>
+        <select>
+          <option selected value=0>--Attendance--</option>
+          <option value=1>Not necessary and not enforced</option>
+          <option value=2>Helpful, but not required</option>
+          <option value=3>Helpful and emphasized</option>
+          <option value=4>Attendance was effectively graded</option>
+        </select>
+        <select>
+          <option selected value=0>--Key to Success--</option>
+          <option value=1>Class attendance</option>
+          <option value=2>Outlines</option>
+          <option value=3>Readings</option>
+          <option value=4>Other</option>
+          <option value=5>I have no idea</option>
+        </select>
+        <select>
+          <option selected value=0>--Difficulty--</option>
+          <option value=1>Easier</option>
+          <option value=2>About average</option>
+          <option value=3>More difficult</option>
+        </select>
+        <select>
+          <option selected value=0>--Grades--</option>
+          <option value=1>Easy H</option>
+          <option value=2>Normal H/P distribution</option>
+          <option value=3>Strict curve with LPs</option>
+          <option value=4>Don't know</option>
+        </select>
+        <select>
+          <option selected value=0>--Preferencing--</option>
+          <option value=1>Open seats</option>
+          <option value=2>Preference low</option>
+          <option value=3>Preference high</option>
+          <option value=4>Must be top preference</option>
+          <option value=5>Don't know</option>
+        </select>
+        <select>
+          <option selected value=0>--Inclusivity--</option>
+          <option value=1>Not at all</option>
+          <option value=2>Some</option>
+          <option value=3>When prompted</option>
+          <option value=4>Very much</option>
+        </select>
+        <div class="twelve columns">
+          &nbsp;&nbsp;Comments <br>
+          <input id="comments" placeholder="Any extra comments?"/> <br>
+        </div>
+      </div>
+      <input type="button" id="searchButton" value="SEARCH" />
+      <div class="uploadOptions hide">
+        <input type="button" id="uploadButton" value="RATE" />
+        <div class="successMessage hide"></div>
+      </div>
+      <svg class="iconLoading hide" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+        <path opacity=".25" d="M16 0 A16 16 0 0 0 16 32 A16 16 0 0 0 16 0 M16 4 A12 12 0 0 1 16 28 A12 12 0 0 1 16 4"/>
+        <path d="M16 0 A16 16 0 0 1 32 16 L28 16 A12 12 0 0 0 16 4z">
+          <animateTransform attributeName="transform"          type="rotate" from="0 16 16" to="360 16 16" dur=".8s" repeatCount="indefinite" />
+        </path>
+      </svg>
+      <div class="errorMessage hide"> Error </div>
+    </div>
+    <div class="row selectortabs">
+      <div class="three columns selectortab active" tabindex="0" alt="Click to search outlines">Search</div>
+      <div class="three columns selectortab inactive" tabindex="0" alt="Click to upload outlines">Rate&nbsp;<div class = "tooltipHover">
+          ?
+          <p>Tell us what you really think. All reviews are anonymous.</p></div></div>
+    </div>
+  </div>
+
+  <div class="container" id="displayOutlines">
+    <div id="displayDopeEvals"></div>
+    <div id="displayDopeComments" class="hide"></div>
+    <div id="displayHlsEvals"></div>
+  </div>
+
+<!-- End Document
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+<!-- <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script> -->
+
+</body>
+</html>

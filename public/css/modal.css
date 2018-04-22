@@ -1,0 +1,126 @@
+.modal {
+  display: none;
+  padding: 7px;
+  position: absolute;
+  z-index: 1100;
+  -webkit-transition: opacity 100ms linear 100ms;
+  -moz-transition: opacity 100ms linear 100ms;
+  -ms-transition: opacity 100ms linear 100ms;
+  transition: opacity 100ms linear 100ms;
+  background: white;
+  background-size: cover;
+  border: 2px solid black;
+  border-radius: 3px;
+  width: 280px;
+  height: auto; }
+
+.modal_info {
+  text-align: center; }
+  .modal_info h4 {
+    color: #ee7900;
+    font-size: 25px;
+    letter-spacing: 1px;
+    margin-bottom: 0; }
+  .modal_info ul {
+    text-align: left;
+    list-style: url("../images/heart.svg");
+    margin-left: 20px;
+    margin-bottom: 0; }
+  .modal_info img {
+    height: 25px;
+    width: auto;
+    display: inline-block; }
+  .modal_info button {
+    border-color: black;
+    background-color: orange;
+    font-size: 12px; }
+  .modal_info sub {
+    font-style: italic; }
+
+.modal_overlay {
+  background: rgba(0, 0, 0, 0.5);
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  overflow: auto;
+  position: fixed;
+  right: 0;
+  top: 0;
+  visibility: hidden;
+  z-index: 900;
+  -webkit-transition: opacity 100ms linear;
+  -moz-transition: opacity 100ms linear;
+  -ms-transition: opacity 100ms linear;
+  transition: opacity 100ms linear; }
+
+.display {
+  opacity: 1;
+  visibility: visible; }
+
+.conceal {
+  visibility: visible; }
+
+button.modal_close {
+  background: #363D4E;
+  border: none;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  border-radius: 50%;
+  color: #FFFFFF;
+  cursor: pointer;
+  outline: none;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  -webkit-transition: -webkit-transform 100ms;
+  -moz-transition: -moz-transform 100ms;
+  -ms-transition: -ms-transform 100ms;
+  transition: transform 100ms; }
+
+button.modal_close:hover {
+  background: #3E465A;
+  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
+  -webkit-transition: -webkit-transform 100ms;
+  -moz-transition: -moz-transform 100ms;
+  -ms-transition: -ms-transform 100ms;
+  transition: transform 100ms; }
+
+button.modal_close span, span:before, span:after {
+  background: #FFFFFF;
+  content: '';
+  cursor: pointer;
+  display: block;
+  height: 2px;
+  position: absolute;
+  width: 20px; }
+
+button.modal_close span:first-child {
+  background: none;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0; }
+
+button.modal_close span:before {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg); }
+
+button.modal_close span:after {
+  -webkit-transform: translateY(-2px) rotate(-45deg);
+  -moz-transform: translateY(-2px) rotate(-45deg);
+  -ms-transform: translateY(-2px) rotate(-45deg);
+  transform: translateY(-2px) rotate(-45deg);
+  top: 2px; }
+
+/*# sourceMappingURL=modal.css.map */

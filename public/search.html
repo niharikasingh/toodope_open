@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Too Dope</title>
+  <meta name="description" content="Law school outlines, by classmates, for classmates.">
+  <meta name="author" content="Neha Singh">
+  <meta name="google-signin-scope" content="profile email">
+  <meta name="google-signin-client_id" content="278291095930-07rv5urr6uaeepbj1bpkrlugp29hk7ps.apps.googleusercontent.com">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/awesomplete.css">
+  <link rel="stylesheet" href="css/search-custom.css">
+  <!-- <link rel="stylesheet" href="css/modal.css"> -->
+
+  <!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="js/awesomplete.min.js"></script>
+<script src="js/constants.js"></script>
+<script src="js/search.js"></script>
+<!-- <script src="js/modal.js" async defer></script> -->
+<script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.ico">
+
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row" id="userInfoBar">
+      <div class="twelve columns" id="userLogin"><div class="g-signin2 hide" id="g-signin2" data-onsuccess="onSignIn" data-onfailure="onFailure"></div>&nbsp;&nbsp;(<a href=# id="signout">Sign Out</a>)</div>
+    </div>
+  </div>
+
+ <hr class="hrrow">
+ <div class="container">
+   <div class="row">
+     <div class="twelve columns">
+       <nav>
+          <ul>
+            <li><u>Outlines</u></li>
+            <a href="/evaluations.html"><li>Evaluations</li></a>
+            <a href="/textbooks.html"><li>Textbooks</li></a>
+            <a href="/registration.html"><li>✨Registration✨</li></a>
+            <a href="https://github.com/niharikasingh/toodope_open" target="_blank"><li><img src="images/github.png" style="height:15px; width: 15px;" /></li></a>
+          </ul>
+        <div class="handle">Menu</div>
+      </nav>
+    </div>
+   </div>
+ </div>
+ <hr class="hrrow">
+
+ <div class="attention">
+   <a href="http://ketchupduck.com/state-of-the-union-toodope.html" target="_blank">The First State of the Union of Toodope.org</a>
+   <p>461/1000 uploads on April 22, 2018</p>
+ </div>
+
+  <div class="container" id="header">
+    <div class="row">
+      <div class="twelve columns">
+        <h1><a href="/search.html">too dope</a></h1>
+        <h5>Law school outlines, by classmates, for classmates.</h5>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row selector">
+      <div class="six columns">
+        &nbsp;&nbsp;Course <br>
+        <input id="courseName" /> <br>
+      </div>
+      <div class="six columns">
+        &nbsp;&nbsp;Professor Last Name <br>
+        <input id="professorName" /> <br>
+      </div>
+      <div class="uploadOptions">
+        Optional Filters:<br>
+      </div>
+      <select>
+        <option selected value="0">--Grade--</option>
+        <option value="DS">DS</option>
+        <option value="H">H</option>
+        <option value="P">P</option>
+        <option value="LP">LP</option>
+      </select>
+      <select>
+        <option selected value="0">--Document Type--</option>
+        <option value="Exam">Exam Answer</option>
+        <option value="Outline">Outline</option>
+      </select>
+      <select>
+        <option selected value="0">--Semester--</option>
+        <option value="Fall">Fall</option>
+        <option value="Winter">Winter</option>
+        <option value="Spring">Spring</option>
+      </select>
+      <select>
+        <option selected value="0">--Year--</option>
+        <option value="2000">2000</option>
+        <option value="2001">2001</option>
+        <option value="2002">2002</option>
+        <option value="2003">2003</option>
+        <option value="2004">2004</option>
+        <option value="2005">2005</option>
+        <option value="2006">2006</option>
+        <option value="2007">2007</option>
+        <option value="2008">2008</option>
+        <option value="2009">2009</option>
+        <option value="2010">2010</option>
+        <option value="2011">2011</option>
+        <option value="2012">2012</option>
+        <option value="2013">2013</option>
+        <option value="2014">2014</option>
+        <option value="2015">2015</option>
+        <option value="2016">2016</option>
+        <option value="2017">2017</option>
+        <option value="2018">2018</option>
+        <option value="2019">2019</option>
+        <option value="2020">2020</option>
+      </select>
+      <input type="button" id="searchButton" value="SEARCH" />
+      <div class="uploadOptions hide">
+        <input type="file" id="file-upload">
+        <input type="button" id="uploadButton" value="UPLOAD" />
+        <div class="successMessage hide"></div>
+      </div>
+      <svg class="iconLoading hide" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+        <path opacity=".25" d="M16 0 A16 16 0 0 0 16 32 A16 16 0 0 0 16 0 M16 4 A12 12 0 0 1 16 28 A12 12 0 0 1 16 4"/>
+        <path d="M16 0 A16 16 0 0 1 32 16 L28 16 A12 12 0 0 0 16 4z">
+          <animateTransform attributeName="transform"          type="rotate" from="0 16 16" to="360 16 16" dur=".8s" repeatCount="indefinite" />
+        </path>
+      </svg>
+      <div class="errorMessage hide"> Error </div>
+    </div>
+    <div class="row selectortabs">
+      <div class="three columns selectortab active" tabindex="0" alt="Click to search outlines">Search</div>
+      <div class="three columns selectortab inactive" tabindex="0" alt="Click to upload outlines">Upload&nbsp;<div class = "tooltipHover">
+          ?
+          <p>Upload your old outlines and exams to help the next generation. File names will be anonymized.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" id="displayOutlines">
+
+  </div>
+
+<!-- End Document
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

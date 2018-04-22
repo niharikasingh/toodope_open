@@ -1,0 +1,6 @@
+.env
+awsSettings.txt
+dump.rdb
+node_modules/*
+
+public/js/registration.js

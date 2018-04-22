@@ -1,0 +1,106 @@
+Database details
+
+List of relations
+Schema |       Name       |   Type   |    Owner
+-------+------------------+----------+-------------
+public | dopeevals        | table    |
+public | dopeevals_id_seq | sequence |
+public | hlsevals         | table    |
+public | hlsevals_id_seq  | sequence |
+public | outlinestable    | table    |
+public | textbooks        | table    |
+public | textbooks_id_seq | sequence |
+
+
+Table "public.outlinestable"
+   Column     |  Type   | Modifiers
+--------------+---------+-----------
+id            | integer | not null
+docname       | text    | not null
+course        | text    |
+professorlast | text    |
+hearts        | integer | default 0
+userhearts    | text[]  |
+grade         | text    |
+semester      | text    |
+year          | integer |
+doctype       | text    |
+random        | text    |
+Indexes:
+"outlinestable_pkey" PRIMARY KEY, btree (id)
+
+
+Table "public.dopeevals"
+   Column    |  Type   |                       Modifiers
+-------------+---------+--------------------------------------------------------
+id           | integer | not null default nextval('dopeevals_id_seq'::regclass)
+legacyid     | integer |
+course       | text    | not null
+professor    | text    | not null
+interaction  | integer |
+feelings     | integer |
+laptops      | integer |
+reading      | integer |
+exam         | integer |
+attendance   | integer |
+success      | integer |
+difficulty   | integer |
+grades       | integer |
+preferencing | integer |
+inclusive    | integer |
+adddate      | date    | default ('now'::text)::date
+comments     | text    |
+Indexes:
+"dopeevals_pkey" PRIMARY KEY, btree (id)
+
+
+Table "public.hlsevals"
+ Column   |     Type     |                       Modifiers
+----------+--------------+-------------------------------------------------------
+id        | integer      | not null default nextval('hlsevals_id_seq'::regclass)
+professor | text         | not null
+course    | text         | not null
+semester  | text         | not null
+year      | integer      | not null
+q1        | numeric(5,3) | not null
+q2        | numeric(5,3) | not null
+q3        | numeric(5,3) | not null
+q4        | numeric(5,3) | not null
+q5        | numeric(5,3) | not null
+q6        | numeric(5,3) | not null
+q7        | numeric(5,3) | not null
+q8        | numeric(5,3) | not null
+q9        | numeric(5,3) | not null
+q10       | numeric(5,3) | not null
+q11       | numeric(5,3) | not null
+q12       | numeric(5,3) | not null
+q13       | numeric(5,3) | not null
+q14       | numeric(5,3) | not null
+q15       | numeric(5,3) | not null
+q16       | numeric(5,3) | not null
+q17       | numeric(5,3) | not null
+q18       | numeric(5,3) | not null
+q19       | numeric(5,3) | not null
+q20       | numeric(5,3) | not null
+q21       | numeric(5,3) | not null
+enrolled  | integer      | not null
+returned  | integer      | not null
+q6_rank   | integer      |
+q20_rank  | integer      |
+q15_rank  | integer      |
+Indexes:
+"hlsevals_pkey" PRIMARY KEY, btree (id)
+
+
+Table "public.textbooks"
+ Column   |     Type     |                       Modifiers
+----------+--------------+--------------------------------------------------------
+id        | integer      | not null default nextval('textbooks_id_seq'::regclass)
+isbn      | bigint       |
+users     | text         |
+price     | numeric(7,2) |
+condition | text         |
+sold      | boolean      | default false
+adddate   | date         | default ('now'::text)::date
+Indexes:
+"textbooks_pkey" PRIMARY KEY, btree (id)
