@@ -188,8 +188,9 @@ function displayAwsTextbooks(results) {
       bStr += b.LowUsedPrice ? b.LowUsedPrice : "Not Available";
       bStr += "</div>";
     }
-    $("#amazonResults").empty();
-    $("#amazonResults").append(bStr);
+    var $amazonResults = $("#amazonResults");
+    $amazonResults.empty();
+    $amazonResults.append(bStr);
   }
 }
 

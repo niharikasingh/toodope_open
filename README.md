@@ -10,7 +10,8 @@ Source code for [toodope.org](http://toodope.org)
 
 ### Setting up your development environment: for everything except uploading files
 1. Clone this repo to your machine.  
-1. Install the following: node
+1. Install the following: node 9.10 or more
+1. Create a `.env` file using `.env_sample` as a template
 1. Install the required node modules by running `npm install` 
 1. Start the server by running `node server.js` 
 1. You should now be able to see portions of the website at `localhost:8080`.  The search functionality will be broken on most pages.  To get search working, contact me at admin [AT] toodope [DOT] org to get access to the database. 
@@ -19,7 +20,7 @@ Source code for [toodope.org](http://toodope.org)
 1. Do all of the above
 1. Install the following: python 2.7, redis, postgreSQL
 1. Install the required python modules by running `pip install requirements.txt`
-1. Create an AWS account and add the credentials to .env variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.  Create an AWS S3 bucket and add the name to `.env` variable `S3_BUCKET`.  Create a postgreSQL database and add the details to `.env` variables `PG*`.  
+1. Create an AWS account and add the credentials to `.env` variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.  Create an AWS S3 bucket and add the name to `.env` variable `S3_BUCKET`.  Create a postgreSQL database and add the details to `.env` variables `PG*`.  
 1. Start redis (`redis-server --daemonize yes`)
 
 ## License
