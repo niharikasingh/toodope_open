@@ -55,15 +55,6 @@ $(document).ready(function(){
 
   $('#uploadButton').click(performUpload);
 
-  $("#displayDopeComments").keydown(function(e) {
-    if (e.which == 39) { // right
-      $(".slick-next").click();
-    }
-    else if (e.which == 37) { // left
-      $(".slick-prev").click();
-    }
-  });
-
   $('.tooltipHover').bind('touchstart', function() {});
 
 });
@@ -80,7 +71,6 @@ function performSearch(e) {
   $("#displayDopeEvals").empty();
   $("#displayHlsEvals").empty();
   $("#displayDopeComments").addClass("hide");
-  if ($('#displayDopeComments').hasClass("slick-initialized")) $('#displayDopeComments').slick('unslick');
   $("#displayDopeComments").empty();
   var courseName = $("#courseName").val();
   var professorName = $("#professorName").val();
@@ -432,7 +422,6 @@ function displayDopeComments(data) {
   }
   $("#displayDopeComments").append(appendStr + "</ul>");
   $("#displayDopeComments").removeClass("hide");
-  //$('#displayDopeComments').slick({adaptiveHeight: true, dots: true});
 }
 
 function displayHlsEvals(data) {
