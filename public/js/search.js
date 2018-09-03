@@ -1,7 +1,6 @@
 $(document).ready(function(){
 
   // ----- AUTOCOMPLETE ----------
-
   new Awesomplete(document.getElementById("courseName"), {list: classList});
   new Awesomplete(document.getElementById("professorName"), {list: professorList});
 
@@ -34,6 +33,7 @@ $(document).ready(function(){
   // -------- HOVER HELPERS ----------
   $('.tooltipHover').bind('touchstart', function() {});
 
+  // -------- FAVORITE OUTLINES ----------
   $('#displayOutlines').on('click', '.heartc', function(){
     var outlineName = $(this).siblings("a").attr("href");
     var outlineID = outlineName.split("_");
@@ -77,7 +77,7 @@ $(document).ready(function(){
     window.location.replace("/index.html");
   });
 
-  //toggle between upload and search bars
+  // toggle between upload and search bars
   $(".selectortab").click(function (e) {
     if ($(this).hasClass("inactive")) {
       $(".selectortab").toggleClass("active inactive");
@@ -99,6 +99,29 @@ $(document).ready(function(){
 
 //----------END OF JQUERY WINDOW READY------------
 
+// -------- ENCOURAGE SUBMISSIONS ----------
+function encourageSubmissions() {
+  $.ajax({
+    url: '/encourage',
+    type: 'GET',
+    dataType: 'json',
+    data: {
+      page: "outlines",
+      userName: userName,
+      format: "json"
+    },
+    complete: function(data) {
+      var results = data.responseJSON;
+      if (results == false) {
+        $("#encourage").show();
+      }
+    },
+    error: function(status, jqXHR, error) {
+      console.log("SEARCH.JS ERROR: " + error);
+    }
+  });
+}
+
 //--------- Search for outlines -----------
 function performSearch(e) {
   $("#searchButton").addClass("hide");
@@ -114,11 +137,12 @@ function performSearch(e) {
     $(".errorMessage").text("Please enter a course and/or professor above.");
     return;
   }
-  // grade, doctype, semester, year
-  selectAnswers = [null, null, null, null];
+  // grade, doctype, semester, year, content words
+  var selectAnswers = [null, null, null, null];
   $("select").each(function(i) {
     selectAnswers[i] = $(this).val();
   });
+  var content = $("#content").val();
   var professorLastName = getProfessorLastName(professorName, true);
   courseName = cleanName(courseName, true);
   $.ajax({
@@ -129,6 +153,7 @@ function performSearch(e) {
       courseName: courseName,
       professorLastName: professorLastName,
       userName: userName,
+      content: content,
       grade: selectAnswers[0],
       doctype: selectAnswers[1],
       semester: selectAnswers[2],
@@ -185,7 +210,7 @@ function appendSQLSearchStr(data) {
     origStr += '<div  class="heartc">&hearts;</div>'
   }
   origStr += '<div class=heartnumber>' + data.hearts + '</div>'
-  origStr += '<a href="https://toodope.s3.amazonaws.com/' + data.docname + '" target="_blank">' + data.random + '</a> (' + data.docname.split(".")[1] + ')<br>';
+  origStr += '<a href="https://toodope.s3.amazonaws.com/' + data.docname + '" target="_blank">' + data.random + '</a> (' + data.docname.split(".")[1] + ')<br />';
   origStr += '<b>Grade: </b>';
   if (data.grade != null) origStr += data.grade;
   else origStr += 'Unknown';
@@ -199,6 +224,9 @@ function appendSQLSearchStr(data) {
     for (j = 0; j < tempLastNames.length; j++) origStr += tempLastNames[j].toUpperCase() + " ";
   }
   else origStr += "Unknown";
+  if ((data.preview != null) && (data.preview.length > 0)) {
+    origStr += "<br />" + data.preview
+  }
   origStr += "</div>";
   return origStr;
 }
@@ -271,6 +299,8 @@ function onSignIn(guser) {
   ga('create', 'UA-90767777-1', 'auto');
   ga('set', 'userId', profile.getEmail()); // Set the user ID using signed-in user_id.
   ga('send', 'pageview');
+  // -------- ENCOURAGE SUBMISSIONS ----------
+  encourageSubmissions();
 }
 
 function onFailure(e) {
@@ -436,6 +466,16 @@ function initUpload(newFileName){
   else if (filename.substr(-5,5) == ".docx") newFileName += ".docx";
   $("#file-upload").css("border-color", "black");
   getSignedRequest(file, newFileName);
+  $.ajax({
+    url: '/encourage',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      page: "outlines",
+      userName: userName,
+      format: "json"
+    }
+  });
 }
 
 window.onerror = function (msg, url, lineNo, columnNo, error) {

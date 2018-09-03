@@ -38,6 +38,7 @@ pool.on('error', function (err, client) {
 require('./server/search.js').setApp(app, pool, urlencodedParser);
 require('./server/textbooks.js').setApp(app, pool);
 require('./server/evaluations.js').setApp(app, pool);
+require('./server/encourage.js').setApp(app, pool, urlencodedParser);
 
 // Sign in through Google
 app.post('/verifyToken', urlencodedParser, function (req, res) {

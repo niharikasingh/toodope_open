@@ -3,5 +3,6 @@ awsSettings.txt
 dump.rdb
 node_modules/*
 *.css.map
+outlines/*.log
 
 public/js/registration.js

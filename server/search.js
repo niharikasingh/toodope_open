@@ -19,6 +19,8 @@ exports.setApp = function (app, pool, urlencodedParser) {
     professorLastName = professorLastName.replace(/[^-a-z ]/g , "");
     var userName = searchParams["userName"];
     userName = userName.replace(/[^-_a-z0-9]/g , "");
+    var content = searchParams["content"];
+    content = content.replace(/[^-a-z0-9 ]/g , "");
     var grade = searchParams["grade"];
     if (grade != 0) grade = grade.replace(/[^A-Za-z]/g, "");
     var doctype = searchParams["doctype"];
@@ -28,30 +30,54 @@ exports.setApp = function (app, pool, urlencodedParser) {
     var year = searchParams["year"];
     if (year != 0) year = year.replace(/[^0-9]/g, "");
     // construct query
-    var queryString = util.format("SELECT doctype, hearts, docname, semester, year, grade, professorlast, random, '%s'=ANY(userhearts) AS thisuserheart FROM outlinestable WHERE", userName);
+    var queryString = "SELECT doctype, hearts, docname, semester, year, grade, professorlast, random, $1=ANY(userhearts) AS thisuserheart";
+    var queryValues = [userName]
+    var i = 2;
+    if (content.length > 0) {
+      queryString += ", ts_headline('english', content, plainto_tsquery('english', $" + i + "), 'MaxFragments=1, MinWords=25, MaxWords=45') AS preview";
+      queryValues.push(content);
+      i += 1;
+    }
+    queryString += " FROM outlinestable WHERE";
     // include at least one of course name and professor name in query
-    var queryStringComp = queryString;
     if (courseName.length > 0) {
-      queryString += util.format(" course LIKE '%%%s%%'", courseName);
+      queryString += " course LIKE $" + i;
+      queryValues.push("%" + courseName + "%");
+      i += 1;
     }
     if (professorLastName.length > 0) {
-      if (queryString != queryStringComp) {
+      if (courseName.length > 0) {
         queryString += " AND"
       }
-      queryString += util.format(" professorlast='%s'", professorLastName);
+      queryString += " professorlast=$" + i;
+      queryValues.push(professorLastName);
+      i += 1;
     }
     // include optional filters in query
+    if (content.length > 0) {
+      queryString += " AND content_vec @@ plainto_tsquery('english', $" + i + ")";
+      queryValues.push(content);
+      i += 1;
+    }
     if (grade != 0) {
-      queryString += util.format(" AND grade='%s'", grade);
+      queryString += " AND grade=$" + i;
+      queryValues.push(grade);
+      i += 1;
     }
     if (doctype != 0) {
-      queryString += util.format(" AND doctype='%s'", doctype);
+      queryString += " AND doctype=$" + i;
+      queryValues.push(doctype);
+      i += 1;
     }
     if (semester != 0) {
-      queryString += util.format(" AND semester='%s'", semester);
+      queryString += " AND semester=$" + i;
+      queryValues.push(semester);
+      i += 1;
     }
     if (year != 0) {
-      queryString += util.format(" AND year='%s'", year);
+      queryString += " AND year=$" + i;
+      queryValues.push(year);
+      i += 1
     }
     queryString += " ORDER BY hearts DESC, id DESC;";
     // execute query
@@ -59,7 +85,7 @@ exports.setApp = function (app, pool, urlencodedParser) {
       if(err) {
         return console.error('error fetching client from pool', err);
       }
-      client.query(queryString, function(err, result) {
+      client.query(queryString, queryValues, function(err, result) {
         done();  //release the client back to the pool
         if(err) {
           return console.error('error running query', err, queryString);

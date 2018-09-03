@@ -1,33 +1,47 @@
 Database details
 
 List of relations
-Schema |       Name       |   Type   |    Owner
--------+------------------+----------+-------------
-public | dopeevals        | table    |
-public | dopeevals_id_seq | sequence |
-public | hlsevals         | table    |
-public | hlsevals_id_seq  | sequence |
-public | outlinestable    | table    |
-public | textbooks        | table    |
-public | textbooks_id_seq | sequence |
+Schema |     Name      | Type  |    Owner
+-------+---------------+-------+-------------
+public | dopeevals     | table | toodopeuser
+public | encourage     | table | toodopeuser
+public | hlsevals      | table | toodopeuser
+public | outlinestable | table | toodopeuser
+public | textbooks     | table | toodopeuser
 
 
 Table "public.outlinestable"
-   Column     |  Type   | Modifiers
---------------+---------+-----------
-id            | integer | not null
-docname       | text    | not null
-course        | text    |
-professorlast | text    |
-hearts        | integer | default 0
-userhearts    | text[]  |
-grade         | text    |
-semester      | text    |
-year          | integer |
-doctype       | text    |
-random        | text    |
+   Column     |   Type   | Modifiers
+--------------+----------+-----------
+id            | integer  | not null
+docname       | text     | not null
+course        | text     |
+professorlast | text     |
+hearts        | integer  | default 0
+userhearts    | text[]   |
+grade         | text     |
+semester      | text     |
+year          | integer  |
+doctype       | text     |
+random        | text     |
+content       | text     |
+content_vec   | tsvector |
 Indexes:
-"outlinestable_pkey" PRIMARY KEY, btree (id)
+  "outlinestable_pkey" PRIMARY KEY, btree (id)
+  "content_vec_idx" gin (content_vec)
+Triggers:
+  content_vec_update BEFORE INSERT OR UPDATE ON outlinestable FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger('content_vec', 'english', 'content')
+
+
+  Table "public.encourage"
+  Column    |  Type   |                       Modifiers
+------------+---------+--------------------------------------------------------
+id          | integer | not null default nextval('encourage_id_seq'::regclass)
+username    | text    | not null
+outlines    | boolean | default false
+evaluations | boolean | default false
+Indexes:
+  "encourage_pkey" PRIMARY KEY, btree (id)
 
 
 Table "public.dopeevals"
@@ -51,7 +65,7 @@ inclusive    | integer |
 adddate      | date    | default ('now'::text)::date
 comments     | text    |
 Indexes:
-"dopeevals_pkey" PRIMARY KEY, btree (id)
+  "dopeevals_pkey" PRIMARY KEY, btree (id)
 
 
 Table "public.hlsevals"
@@ -89,7 +103,7 @@ q6_rank   | integer      |
 q20_rank  | integer      |
 q15_rank  | integer      |
 Indexes:
-"hlsevals_pkey" PRIMARY KEY, btree (id)
+  "hlsevals_pkey" PRIMARY KEY, btree (id)
 
 
 Table "public.textbooks"
@@ -103,4 +117,4 @@ condition | text         |
 sold      | boolean      | default false
 adddate   | date         | default ('now'::text)::date
 Indexes:
-"textbooks_pkey" PRIMARY KEY, btree (id)
+  "textbooks_pkey" PRIMARY KEY, btree (id)

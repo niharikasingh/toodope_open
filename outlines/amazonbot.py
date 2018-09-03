@@ -34,7 +34,7 @@ PREF = 'uploads/'
 LPREF = 'outlines/temp/'
 index = 0
 rwl = []
-s3 = boto3.client('s3', 'us-west-2', config=Config(signature_version='s3v4'))
+s3 = boto3.client('s3', 'us-east-2', config=Config(signature_version='s3v4'))
 gradeArray = ["DS", "H", "P", "LP"]
 doctypeArray = ["Outline", "Exam"]
 

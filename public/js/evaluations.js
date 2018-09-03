@@ -63,6 +63,29 @@ $(document).ready(function(){
 
 var hlsEvalsCount = 576;
 
+// -------- ENCOURAGE SUBMISSIONS ----------
+function encourageSubmissions() {
+  $.ajax({
+    url: '/encourage',
+    type: 'GET',
+    dataType: 'json',
+    data: {
+      page: "evaluations",
+      userName: userName,
+      format: "json"
+    },
+    complete: function(data) {
+      var results = data.responseJSON;
+      if (results == false) {
+        $("#encourage").show();
+      }
+    },
+    error: function(status, jqXHR, error) {
+      console.log("SEARCH.JS ERROR: " + error);
+    }
+  });
+}
+
 //--------- Search for outlines -----------
 function performSearch(e) {
   $("#searchButton").addClass("hide");
@@ -484,6 +507,8 @@ function onSignIn(guser) {
   ga('create', 'UA-90767777-1', 'auto');
   ga('set', 'userId', profile.getEmail()); // Set the user ID using signed-in user_id.
   ga('send', 'pageview');
+  // -------- ENCOURAGE SUBMISSIONS ----------
+  encourageSubmissions();
 }
 
 function onFailure(e) {
@@ -555,6 +580,16 @@ function performUpload() {
         preferencing: preferencing,
         inclusive: inclusive,
         comments: comments,
+        format: "json"
+      }
+    });
+    $.ajax({
+      url: '/encourage',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        page: "evaluations",
+        userName: userName,
         format: "json"
       }
     });
