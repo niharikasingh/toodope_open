@@ -22,7 +22,7 @@ if ('PGUSER' in os.environ):
     dbConnStr += " port=" + os.environ['PGPORT']
     dbConnStr += " host=" + os.environ['PGHOST']
 else:
-    load_dotenv('../../.env')
+    load_dotenv('../.env')
     dbConnStr += "user=" + os.environ.get('PGUSER')
     dbConnStr += " dbname=" + os.environ.get('PGDATABASE')
     dbConnStr += " password=" + os.environ.get('PGPASSWORD')
@@ -102,14 +102,6 @@ def sendToDb(f):
     cur.close()
     conn.close()
 
-def cleanDoc(fn):
-    newNameArray = fn.split("_")
-    randomWord = random.choice(rwl)
-    newName = "_".join(newNameArray[:-1]) + "_" + randomWord + "_" + str(index) + ".doc"
-    print "Writing: " + newName
-    os.rename(fn, newName)
-    return newName
-
 def cleanDocx(fn):
     print "Cleaning: " + fn
     document = Document(fn)
@@ -188,11 +180,9 @@ def cleanscript(f):
             cur.execute("SELECT max(id) FROM outlinestable")
             index = cur.fetchone()[0] + 1
     global rwl
-    with open("../randomWordList.json", "r") as rwlf:
+    with open("randomWordList.json", "r") as rwlf:
         rwl = json.load(rwlf)
     if ((f.count(".") != 1) or (f.startswith('.'))):
-        return
-    if (f[-4:] == ".doc"):
         return
     newF = LPREF + f
     cleanF = ""

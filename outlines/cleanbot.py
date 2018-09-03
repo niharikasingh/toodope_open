@@ -4,14 +4,6 @@ from pdfrw import PdfReader, PdfWriter, IndirectPdfDict
 import os
 import json
 
-def cleanDoc(fn):
-    newNameArray = fn.split("_")
-    randomWord = random.choice(rwl)
-    newName = "_".join(newNameArray[:-1]) + "_" + randomWord + ".doc"
-    print "Writing: " + newName
-    os.rename('temp/'+fn, 'temp/c'+newName)
-    return
-
 def cleanDocx(fn):
     document = Document('temp/'+fn)
     core_properties = document.core_properties
@@ -52,9 +44,6 @@ for fn in filenames:
     if (fn[-5:] == ".docx"):
         print "Cleaning DOCX: " + fn
         cleanDocx(fn)
-    elif (fn[-4:] == ".doc"):
-        print "Cleaning DOC: " + fn
-        cleanDoc(fn)
     elif (fn[-4:] == ".pdf"):
         print "Cleaning PDF: " + fn
         cleanPdf(fn)

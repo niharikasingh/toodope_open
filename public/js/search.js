@@ -424,15 +424,14 @@ function initUpload(newFileName){
     return;
   }
   var filename = file.name;
-  if ((filename.substr(-4,4) != ".doc") && (filename.substr(-4,4) != ".pdf") && (filename.substr(-5,5) != ".docx")) {
+  if ((filename.substr(-4,4) != ".pdf") && (filename.substr(-5,5) != ".docx")) {
     $("#file-upload").css("border-color", "red");
     $(".errorMessage").removeClass("hide");
-    $(".errorMessage").text("Please choose a .doc, .docx, or .pdf file.");
+    $(".errorMessage").text("Please choose a .docx or .pdf file.");
     $('#uploadButton').removeClass("hide");
     $('.iconLoading').addClass("hide");
     return;
   }
-  else if (filename.substr(-4,4) == ".doc") newFileName += ".doc";
   else if (filename.substr(-4,4) == ".pdf") newFileName += ".pdf";
   else if (filename.substr(-5,5) == ".docx") newFileName += ".docx";
   $("#file-upload").css("border-color", "black");

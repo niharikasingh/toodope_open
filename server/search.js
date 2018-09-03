@@ -106,7 +106,7 @@ exports.setApp = function (app, pool, urlencodedParser) {
     });
     const fileName = req.query['file-name'];
     const fileType = req.query['file-type'];
-    if ((fileName.substr(-4,4) != ".doc") && (fileName.substr(-4,4) != ".pdf") && (fileName.substr(-5,5) != ".docx")) res.status(400).send("Incorrect file type.");
+    if ((fileName.substr(-4,4) != ".pdf") && (fileName.substr(-5,5) != ".docx")) res.status(400).send("Incorrect file type.");
 
     const s3Params = {
       Bucket: process.env.S3_BUCKET,

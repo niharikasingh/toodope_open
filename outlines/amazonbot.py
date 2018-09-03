@@ -103,14 +103,6 @@ def sendToDb(f):
     cur.close()
     conn.close()
 
-def cleanDoc(fn):
-    newNameArray = fn.split("_")
-    randomWord = random.choice(rwl)
-    newName = "_".join(newNameArray[:-1]) + "_" + randomWord + "_" + str(index) + ".doc"
-    print "Writing: " + newName
-    os.rename(fn, newName)
-    return newName
-
 def cleanDocx(fn):
     print "Cleaning: " + fn
     document = Document(fn)
@@ -193,8 +185,6 @@ def cleanscript(f):
     if (f == PREF):
         return
     if ((f.count(".") != 1) or (f.startswith('.'))):
-        return
-    if (f[-4:] == ".doc"):
         return
     newF = LPREF + f[len(PREF):]
     cleanF = ""
