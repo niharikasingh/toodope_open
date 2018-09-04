@@ -593,6 +593,7 @@ function performUpload() {
         format: "json"
       }
     });
+    $("#encourage").hide();
     $(".successMessage").removeClass("hide");
     $(".successMessage").text("Thanks for submitting!");
     $('#uploadButton').removeClass("hide");

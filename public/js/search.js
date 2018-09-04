@@ -476,6 +476,7 @@ function initUpload(newFileName){
       format: "json"
     }
   });
+  $("#encourage").hide();
 }
 
 window.onerror = function (msg, url, lineNo, columnNo, error) {
