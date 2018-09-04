@@ -11,6 +11,7 @@ exports.setApp = function (app, pool, urlencodedParser) {
 
     if ((userName.slice(-9,-5) != 'lm19') && (userName.slice(-9,-5) != 'jd19') && (userName.slice(-9,-5) != 'jd20')) {
       res.send(true);
+      return;
     }
 
     var queryString = "SELECT * FROM encourage WHERE username=$1;";
