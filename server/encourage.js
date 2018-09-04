@@ -9,6 +9,10 @@ exports.setApp = function (app, pool, urlencodedParser) {
     var page = searchParams["page"];
     page = page.replace(/[^a-z]/g , "");
 
+    if ((userName.slice(-9,-5) != 'lm19') && (userName.slice(-9,-5) != 'jd19') && (userName.slice(-9,-5) != 'jd20')) {
+      res.send(true);
+    }
+
     var queryString = "SELECT * FROM encourage WHERE username=$1;";
     var queryValues = [userName];
 
