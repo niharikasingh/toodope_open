@@ -30,8 +30,7 @@ Indexes:
   "outlinestable_pkey" PRIMARY KEY, btree (id)
   "content_vec_idx" gin (content_vec)
 Triggers:
-  content_vec_update BEFORE INSERT OR UPDATE ON outlinestable FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger('content_vec', 'english', 'content')
-
+  content_vec_update BEFORE INSERT OR UPDATE ON outlinestable FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger('content_vec', 'pg_catalog.english', 'content')
 
   Table "public.encourage"
   Column    |  Type   |                       Modifiers

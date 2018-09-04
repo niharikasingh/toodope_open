@@ -93,10 +93,10 @@ def sendToDb(f):
         T_doctype = None
     T_random = elems[-2]
     try:
-        cur.execute("INSERT INTO outlinestable VALUES (%s, %s, %s, %s, 0, '{}', %s, %s, %s, %s, %s)", [T_id, T_docname, T_course, T_professorlast, T_grade, T_semester, T_year, T_doctype, T_random])
+        cur.execute("INSERT INTO outlinestable (id, docname, course, professorlast, hearts, userhearts, grade, semester, year, doctype, random, content) VALUES (%s, %s, %s, %s, 0, '{}', %s, %s, %s, %s, %s, '')", [T_id, T_docname, T_course, T_professorlast, T_grade, T_semester, T_year, T_doctype, T_random])
     except psycopg2.Error as e:
         print "---ERROR---"
-        curQuery = "INSERT INTO outlinestable VALUES (%d, %s, %s, %s, 0, '{}', %s, %s, %s, %s, %s)" %(T_id, T_docname, T_course, T_professorlast, T_grade, T_semester, str(T_year), T_doctype, T_random)
+        curQuery = "INSERT INTO outlinestable (id, docname, course, professorlast, hearts, userhearts, grade, semester, year, doctype, random, content) VALUES (%d, %s, %s, %s, 0, '{}', %s, %s, %s, %s, %s, '')" %(T_id, T_docname, T_course, T_professorlast, T_grade, T_semester, str(T_year), T_doctype, T_random)
         print curQuery
         print e
     conn.commit()
