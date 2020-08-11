@@ -117,3 +117,19 @@ sold      | boolean      | default false
 adddate   | date         | default ('now'::text)::date
 Indexes:
   "textbooks_pkey" PRIMARY KEY, btree (id)
+
+
+Note to self: This is how I added a readonly user to the database
+
+outlines=> CREATE ROLE toodopereadonly WITH LOGIN PASSWORD 'password' NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION VALID UNTIL 'infinity';
+CREATE ROLE
+outlines=> GRANT CONNECT ON DATABASE outlines TO toodopereadonly;
+GRANT
+outlines=> GRANT USAGE ON SCHEMA public TO toodopereadonly;
+GRANT
+outlines=> GRANT SELECT ON ALL TABLES IN SCHEMA public TO toodopereadonly;
+GRANT
+outlines=> GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO toodopereadonly;
+GRANT
+outlines=> ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO toodopereadonly;
+ALTER DEFAULT PRIVILEGES
