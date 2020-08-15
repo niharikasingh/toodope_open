@@ -33,7 +33,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.13.1",
     "redis": "2.6.5",
-    "webpack": "^3.11.0",
+    "webpack": "^4.44.1",
     "xml2js": "0.4.17"
   },
   "engines": {
