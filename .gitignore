@@ -4,5 +4,5 @@ dump.rdb
 node_modules/*
 *.css.map
 outlines/*.log
-
+.DS_Store
 public/js/registration.js
