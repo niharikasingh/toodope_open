@@ -327,6 +327,15 @@ form {
     font-size: 18px;
     padding: 0px 10px; }
 
+#displayIndividualReviews {
+  padding: 0px 5px; }
+  #displayIndividualReviews .dopeComment {
+    border-radius: 5px;
+    color: grey;
+    font-style: italic;
+    font-size: 18px;
+    padding: 0px 10px; }
+
 .attention {
   background-color: #ffb160;
   text-align: center;
