@@ -454,9 +454,8 @@ function displayDopeComments(data) {
       appendStr += data[i].comments + "</li>";
     }
   }
-  appendStr += "</ul>"
 
-  $("#displayDopeComments").append(appendStr + "</ul></div>");
+  $("#displayDopeComments").append(appendStr + "</ul>");
   $("#displayDopeComments").removeClass("hide");
 }
 
@@ -468,9 +467,12 @@ function displayIndividualReviews(data) {
   // display details of each submission in a collapsible
   // TODO: we might also want to have a field for course and professor, for profs who teach more than one course or vice versa.
   appendStr += '<button type="button" class="collapsible">See Individual Reviews</button>'
+  // start list and div of individual reviews
   appendStr += '<div class="content">'
   appendStr += "<ul>";
+
   for (i = 0; i < data.length; i++) {
+    // within one individual review, start list of each field of the review: grades, difficulty, comments if applicable 
     appendStr += "<li class='dopeComment' tabindex='0'>"
     var currData = data[i];
     appendStr += "ADDED: " + currData.adddate.slice(0, 4);
@@ -481,13 +483,17 @@ function displayIndividualReviews(data) {
       var currAns = currData[c];
       var tempc = c;
       if (c == "success") tempc = "Key to success";
-      if (categoriesDisplay[c][currAns] && c != "success") appendStr += "<li>" + c.toUpperCase() + ": " + categoriesDisplay[c][currAns]["text"];
-      else if (categoriesDisplay[c][currAns] && c == "success") appendStr += "<li>" + tempc.toUpperCase() + ": " + categoriesDisplay[c][currAns]["text"];
+      if (categoriesDisplay[c][currAns] && c != "success") appendStr += "<li>" + c.toUpperCase() + ": " + categoriesDisplay[c][currAns]["text"] + "</li>";
+      else if (categoriesDisplay[c][currAns] && c == "success") appendStr += "<li>" + tempc.toUpperCase() + ": " + categoriesDisplay[c][currAns]["text"] + "</li>";
     }
-    if (data[i].comments && data[i].comments.length != 0) appendStr += "<li> COMMENTS: " + data[i].comments + "</li></ul>";
-    else appendStr += "</li></ul>";
+    // the first /li ends the "comments" list item, while the second marks the end of this individual review
+    if (data[i].comments && data[i].comments.length != 0) appendStr += "<li> COMMENTS: " + data[i].comments + "</li></ul></li>";
+
+    // within one individual review, end list of each field of the review: grades, difficulty, comments if applicable 
+    else appendStr += "</ul></li>";
   }
 
+  //end list and div of individual reviews
   $("#displayIndividualReviews").append(appendStr + "</ul></div>");
   $("#displayIndividualReviews").removeClass("hide");
 
