@@ -33,11 +33,11 @@ exports.setApp = function (app, pool) {
     course = course.replace(/[^-a-z0-9 \/]/g , "");
     var professor = searchParams["professor"]
     professor = professor.replace(/[^-a-z0-9 \/]/g , "");
-    var queryString = "SELECT comments FROM dopeevals WHERE";
+    var queryString = "SELECT * FROM dopeevals WHERE";
     if (course.length == 0) queryString += util.format(" professor LIKE '%%%s'", professor);
     else if (professor.length == 0) queryString += util.format(" course LIKE '%%%s%%'", course);
     else queryString += util.format(" professor LIKE '%%%s' AND course LIKE '%%%s%%'", professor, course);
-    queryString += " AND comments IS NOT NULL ORDER BY adddate DESC;";
+    queryString += " AND grades <> 0 ORDER BY adddate DESC;";
     pool.connect(function(err, client, done) {
       if(err) {
         return console.error('error fetching client from pool', err);
