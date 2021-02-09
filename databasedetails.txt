@@ -133,3 +133,7 @@ outlines=> GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO toodopereadonly;
 GRANT
 outlines=> ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO toodopereadonly;
 ALTER DEFAULT PRIVILEGES
+
+Note to self: Command to backup postgres db
+
+pg_dump -h <PGHOST> -U <PGUSER> <PGDATABASE> > pg_dump_toodope_outlines
