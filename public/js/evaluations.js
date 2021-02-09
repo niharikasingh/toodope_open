@@ -1,37 +1,37 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
   // ----- AUTOCOMPLETE ----------
-  new Awesomplete(document.getElementById("courseName"), {list: classList});
-  new Awesomplete(document.getElementById("professorName"), {list: professorList});
+  new Awesomplete(document.getElementById("courseName"), { list: classList });
+  new Awesomplete(document.getElementById("professorName"), { list: professorList });
 
   // ----- SEARCH BUTTON ---------
   $("#searchButton").click(performSearch);
-  $(".row.selector").keypress(function(e) {
-      if(e.which == 13) {
-        if ($('#searchButton').css('display') != 'none') {
-          performSearch();
-        }
-        else {
-          performUpload();
-        }
+  $(".row.selector").keypress(function (e) {
+    if (e.which == 13) {
+      if ($('#searchButton').css('display') != 'none') {
+        performSearch();
       }
+      else {
+        performUpload();
+      }
+    }
   });
 
   // ------- GOOGLE SIGN-IN ----------
   $("#g-signin2").hide();
 
   // -------- RESPONSIVE MENU ------------
-  $('.handle').on('click', function(){
-       $('nav ul').toggleClass('showing');
+  $('.handle').on('click', function () {
+    $('nav ul').toggleClass('showing');
   });
   // -------- RESPONSIVE SEARCH RESULTS ----------
   positionDisplayOutlines();
-  $(window).resize(function() {
+  $(window).resize(function () {
     positionDisplayOutlines();
   });
 
   // sign out
-  $("#signout").click(function(e) {
+  $("#signout").click(function (e) {
     var auth2 = gapi.auth2.getAuthInstance()
     auth2.signOut();
     window.location.replace("/index.html");
@@ -55,7 +55,7 @@ $(document).ready(function(){
 
   $('#uploadButton').click(performUpload);
 
-  $('.tooltipHover').bind('touchstart', function() {});
+  $('.tooltipHover').bind('touchstart', function () { });
 
 });
 
@@ -74,13 +74,13 @@ function encourageSubmissions() {
       userName: userName,
       format: "json"
     },
-    complete: function(data) {
+    complete: function (data) {
       var results = data.responseJSON;
       if (results == false) {
         $("#encourage").show();
       }
     },
-    error: function(status, jqXHR, error) {
+    error: function (status, jqXHR, error) {
       console.log("SEARCH.JS ERROR: " + error);
     }
   });
@@ -95,6 +95,9 @@ function performSearch(e) {
   $("#displayHlsEvals").empty();
   $("#displayDopeComments").addClass("hide");
   $("#displayDopeComments").empty();
+  $("#displayIndividualReviews").addClass("hide");
+  $("#displayIndividualReviews").empty();
+
   var courseName = $("#courseName").val();
   var professorName = $("#professorName").val();
   if ((courseName.length == 0) && (professorName.length == 0)) {
@@ -116,14 +119,14 @@ function performSearch(e) {
       userName: userName,
       format: "json"
     },
-    complete: function(data) {
+    complete: function (data) {
       var results = JSON.parse(data.responseText);
       console.log("SEARCH.JS SUCCESS: " + JSON.stringify(results));
       displayHlsEvals(results);
       $("#searchButton").removeClass("hide");
       $('.iconLoading').addClass("hide");
     },
-    error: function(status, jqXHR, error) {
+    error: function (status, jqXHR, error) {
       console.log("SEARCH.JS ERROR: " + error);
       $("#searchButton").removeClass("hide");
       $('.iconLoading').addClass("hide");
@@ -139,14 +142,14 @@ function performSearch(e) {
       userName: userName,
       format: "json"
     },
-    complete: function(data) {
+    complete: function (data) {
       var results = JSON.parse(data.responseText);
       console.log("SEARCH.JS SUCCESS: " + JSON.stringify(results));
       displayDopeEvals(results);
       $("#searchButton").removeClass("hide");
       $('.iconLoading').addClass("hide");
     },
-    error: function(status, jqXHR, error) {
+    error: function (status, jqXHR, error) {
       console.log("SEARCH.JS ERROR: " + error);
       $("#searchButton").removeClass("hide");
       $('.iconLoading').addClass("hide");
@@ -162,14 +165,15 @@ function performSearch(e) {
       userName: userName,
       format: "json"
     },
-    complete: function(data) {
+    complete: function (data) {
       var results = JSON.parse(data.responseText);
       console.log("SEARCH.JS SUCCESS: " + JSON.stringify(results));
       displayDopeComments(results);
+      displayIndividualReviews(results);
       $("#searchButton").removeClass("hide");
       $('.iconLoading').addClass("hide");
     },
-    error: function(status, jqXHR, error) {
+    error: function (status, jqXHR, error) {
       console.log("SEARCH.JS ERROR: " + error);
       $("#searchButton").removeClass("hide");
       $('.iconLoading').addClass("hide");
@@ -183,12 +187,12 @@ function cleanName(name) {
   name = name.toLowerCase();
   // remove everything except alphanumeric characters
   name = name.replace(/&/g, "and");
-  name = name.replace(/[^-a-z0-9 \/]/g , "");
+  name = name.replace(/[^-a-z0-9 \/]/g, "");
   return name;
 }
 
 function getProfessorLastName(professorName) {
-  var professorLastName = professorName.replace(/[ ,\.]/g , "");
+  var professorLastName = professorName.replace(/[ ,\.]/g, "");
   professorLastName = cleanName(professorLastName);
   return professorLastName;
 }
@@ -196,212 +200,212 @@ function getProfessorLastName(professorName) {
 //------------ DISPLAY OUTLINES --------------
 var categories = ["interaction", "feelings", "laptops", "reading", "exam", "attendance", "success", "difficulty", "grades", "preferencing", "inclusive"];
 var categoriesDisplay = {
-  "interaction" : {
-    1 : {
+  "interaction": {
+    1: {
       image: "images/interactions1.svg",
       text: "Cold calls"
     },
-    2 : {
+    2: {
       image: "images/interactions2.svg",
       text: "Soft cold calls"
     },
-    3 : {
+    3: {
       image: "images/interactions3.svg",
       text: "Volunteers"
     },
-    4 : {
+    4: {
       image: "images/interactions4.svg",
       text: "Just lecture"
     },
-    5 : {
+    5: {
       image: "images/interactions5.svg",
       text: "Panels"
     }
   },
-  "feelings" : {
-    1 : {
+  "feelings": {
+    1: {
       image: "images/feelings1.svg",
       text: "Glad it's over"
     },
-    2 : {
+    2: {
       image: "images/feelings2.svg",
       text: "Glad I took it"
     },
-    3 : {
+    3: {
       image: "images/feelings3.svg",
       text: "My favorite course at HLS"
     },
-    4 : {
+    4: {
       image: "images/feelings4.svg",
       text: "No strong feelings"
     }
   },
-  "laptops" : {
-    1 : {
+  "laptops": {
+    1: {
       image: "images/laptops1.svg",
       text: "Laptops allowed"
     },
-    2 : {
+    2: {
       image: "images/laptops2.svg",
       text: "Laptops not allowed"
     },
-    3 : {
+    3: {
       image: "images/laptops3.svg",
       text: "Varies"
     }
   },
-  "reading" : {
-    1 : {
+  "reading": {
+    1: {
       image: "images/reading1.svg",
       text: "Barely any"
     },
-    2 : {
+    2: {
       image: "images/reading2.svg",
       text: "Less than average"
     },
-    3 : {
+    3: {
       image: "images/reading3.svg",
       text: "About average"
     },
-    4 : {
+    4: {
       image: "images/reading4.svg",
       text: "On the high side"
     },
-    5 : {
+    5: {
       image: "images/reading5.svg",
       text: "Excessive"
     }
   },
-  "exam" : {
-    1 : {
+  "exam": {
+    1: {
       image: "images/exam1.svg",
       text: "Simple"
     },
-    2 : {
+    2: {
       image: "images/exam2.svg",
       text: "Easier than normal"
     },
-    3 : {
+    3: {
       image: "images/exam3.svg",
       text: "About average"
     },
-    4 : {
+    4: {
       image: "images/exam4.svg",
       text: "Difficult"
     },
-    5 : {
+    5: {
       image: "images/exam5.svg",
       text: "Extremely frustrating"
     }
   },
-  "attendance" : {
-    1 : {
+  "attendance": {
+    1: {
       image: "images/attendance1.svg",
       text: "Not necessary and not enforced"
     },
-    2 : {
+    2: {
       image: "images/attendance1.svg",
       text: "Helpful, but not required"
     },
-    3 : {
+    3: {
       image: "images/attendance2.svg",
       text: "Helpful and emphasized"
     },
-    4 : {
+    4: {
       image: "images/attendance2.svg",
       text: "Attendance was effectively graded"
     }
   },
-  "success" : {
-    1 : {
+  "success": {
+    1: {
       image: "images/success1.svg",
       text: "Class attendance"
     },
-    2 : {
+    2: {
       image: "images/success2.svg",
       text: "Outlines"
     },
-    3 : {
+    3: {
       image: "images/success3.svg",
       text: "Readings"
     },
-    4 : {
+    4: {
       image: "images/success4.svg",
       text: "Other"
     },
-    5 : {
+    5: {
       image: "images/success4.svg",
       text: "I have no idea"
     }
   },
-  "difficulty" : {
-    1 : {
+  "difficulty": {
+    1: {
       image: "images/difficulty1.svg",
       text: "Easier"
     },
-    2 : {
+    2: {
       image: "images/difficulty2.svg",
       text: "About average"
     },
-    3 : {
+    3: {
       image: "images/difficulty3.svg",
       text: "More difficult"
     }
   },
-  "grades" : {
-    1 : {
+  "grades": {
+    1: {
       image: "images/grades1.svg",
       text: "Easy H"
     },
-    2 : {
+    2: {
       image: "images/grades1.svg",
       text: "Normal H/P distribution"
     },
-    3 : {
+    3: {
       image: "images/grades2.svg",
       text: "Strict curve with LPs"
     },
-    4 : {
+    4: {
       image: "images/grades3.svg",
       text: "Don't know"
     }
   },
-  "preferencing" : {
-    1 : {
+  "preferencing": {
+    1: {
       image: "images/preferencing.svg",
       text: "Open seats"
     },
-    2 : {
+    2: {
       image: "images/preferencing.svg",
       text: "Preference low"
     },
-    3 : {
+    3: {
       image: "images/preferencing.svg",
       text: "Preference high"
     },
-    4 : {
+    4: {
       image: "images/preferencing.svg",
       text: "Must be top preference"
     },
-    5 : {
+    5: {
       image: "images/preferencing.svg",
       text: "Don't know"
     }
   },
   "inclusive": {
-    1 : {
+    1: {
       image: "images/inclusive.svg",
       text: "Not at all"
     },
-    2 : {
+    2: {
       image: "images/inclusive.svg",
       text: "Some"
     },
-    3 : {
+    3: {
       image: "images/inclusive.svg",
       text: "When prompted"
     },
-    4 : {
+    4: {
       image: "images/inclusive.svg",
       text: "Very much"
     }
@@ -437,15 +441,80 @@ function displayDopeEvals(data) {
   $("#displayDopeEvals").append(appendStr);
 }
 
+
 function displayDopeComments(data) {
   if (data.length == 0) return;
-  var appendStr = "<ul>";
+  var appendStr = ""
+
+  // display all comments in a list
+  appendStr += "<ul>";
   for (i = 0; i < data.length; i++) {
-    if (data[i].comments.length > 0) appendStr += "<li class='dopeComment' tabindex='0'>" + data[i].comments + "</li>";
+    if (data[i].comments && data[i].comments.length != 0) {
+      appendStr += "<li class='dopeComment' tabindex='0'>";
+      appendStr += data[i].comments + "</li>";
+    }
   }
+
   $("#displayDopeComments").append(appendStr + "</ul>");
   $("#displayDopeComments").removeClass("hide");
 }
+
+
+function displayIndividualReviews(data) {
+  if (data.length == 0) return;
+  var appendStr = ""
+
+  // display details of each submission in a collapsible
+  // TODO: we might also want to have a field for course and professor, for profs who teach more than one course or vice versa.
+  appendStr += '<button type="button" class="collapsible">See Individual Reviews</button>'
+  // start list and div of individual reviews
+  appendStr += '<div class="content">'
+  appendStr += "<ul>";
+
+  for (i = 0; i < data.length; i++) {
+    // within one individual review, start list of each field of the review: grades, difficulty, comments if applicable 
+    appendStr += "<li class='dopeComment' tabindex='0'>"
+    var currData = data[i];
+    appendStr += "ADDED: " + currData.adddate.slice(0, 4);
+    appendStr += "<ul>"
+    for (j = 0; j < categories.length; j++) {
+      var c = categories[j];
+      // currData: {"id":2389,"legacyid":3841,"course":"poverty law","professor":"lucie white","interaction":3,"feelings":2,"laptops":1,"reading":3,"exam":2,"attendance":2,"success":1,"difficulty":2,"grades":4,"preferencing":3,"inclusive":3,"adddate":"2017-03-17T00:00:00.000Z","comments":null}
+      var currAns = currData[c];
+      var tempc = c;
+      if (c == "success") tempc = "Key to success";
+      if (categoriesDisplay[c][currAns] && c != "success") appendStr += "<li>" + c.toUpperCase() + ": " + categoriesDisplay[c][currAns]["text"] + "</li>";
+      else if (categoriesDisplay[c][currAns] && c == "success") appendStr += "<li>" + tempc.toUpperCase() + ": " + categoriesDisplay[c][currAns]["text"] + "</li>";
+    }
+    // the first /li ends the "comments" list item, while the second marks the end of this individual review
+    if (data[i].comments && data[i].comments.length != 0) appendStr += "<li> COMMENTS: " + data[i].comments + "</li></ul></li>";
+
+    // within one individual review, end list of each field of the review: grades, difficulty, comments if applicable 
+    else appendStr += "</ul></li>";
+  }
+
+  //end list and div of individual reviews
+  $("#displayIndividualReviews").append(appendStr + "</ul></div>");
+  $("#displayIndividualReviews").removeClass("hide");
+
+  //handle collapsible
+  var coll = document.getElementsByClassName("collapsible");
+  var i;
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
+  }
+
+
+}
+
 
 function displayHlsEvals(data) {
   //no data found
@@ -460,13 +529,13 @@ function displayHlsEvals(data) {
     appendStr += "<div class='row outline'><h5>";
     appendStr += currData.course.toUpperCase() + " (" + currData.professor.toUpperCase() + ", " + currData.semester.toUpperCase() + " " + currData.year + ")</h5>";
     appendStr += "Overall Effectiveness of Teacher: " + currData.q6 + "/5.000";
-    var tempPercentile = Math.floor(((hlsEvalsCount - currData.q6_rank)/hlsEvalsCount)*100);
+    var tempPercentile = Math.floor(((hlsEvalsCount - currData.q6_rank) / hlsEvalsCount) * 100);
     appendStr += " -- Percentile: " + tempPercentile + "% (higher is better)<br>";
     appendStr += "Overall Effectiveness of Course: " + currData.q15 + "/5.000";
-    tempPercentile = Math.floor(((hlsEvalsCount - currData.q15_rank)/hlsEvalsCount)*100);
+    tempPercentile = Math.floor(((hlsEvalsCount - currData.q15_rank) / hlsEvalsCount) * 100);
     appendStr += " -- Percentile: " + tempPercentile + "% (higher is better)<br>";
     appendStr += "Average Hours per Week: " + currData.q20;
-    tempPercentile = Math.floor(((currData.q20_rank)/hlsEvalsCount)*100);
+    tempPercentile = Math.floor(((currData.q20_rank) / hlsEvalsCount) * 100);
     appendStr += " -- Percentile: " + tempPercentile + "% (higher means less work)</div><br>";
   }
   $("#displayHlsEvals").append(appendStr);
@@ -474,7 +543,7 @@ function displayHlsEvals(data) {
 
 function positionDisplayOutlines() {
   var offset = 100 + $(".selector").height();
-    $("#displayOutlines").css("margin-top", offset+"px");
+  $("#displayOutlines").css("margin-top", offset + "px");
 }
 
 
@@ -482,9 +551,9 @@ function positionDisplayOutlines() {
 var userName = "";
 function onLoadCallback() {
   var auth2;
-  gapi.load('auth2', function() {
+  gapi.load('auth2', function () {
     auth2 = gapi.auth2.init();
-    auth2.then(function() {
+    auth2.then(function () {
       if (auth2.isSignedIn.get() == false) {
         window.location.replace("/index.html");
       }
@@ -500,10 +569,12 @@ function onSignIn(guser) {
   userName = userName.replace(/harvard\.edu/g, "");
   userName = userName.replace(/[@\.]/g, "_");
   //analytics
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date(); a = s.createElement(o),
+      m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
   ga('create', 'UA-90767777-1', 'auto');
   ga('set', 'userId', profile.getEmail()); // Set the user ID using signed-in user_id.
   ga('send', 'pageview');
@@ -618,9 +689,9 @@ function performUpload() {
 
 window.onerror = function (msg, url, lineNo, columnNo, error) {
   $.ajax({
-    type:"GET",
-    cache:false,
-    url:"/globalError",
+    type: "GET",
+    cache: false,
+    url: "/globalError",
     dataType: "json",
     data: {
       message: msg,
