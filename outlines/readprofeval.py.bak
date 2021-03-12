@@ -31,25 +31,25 @@ def isFloat(i):
     except:
         return False #str
 
-print(filenames)
+print filenames
 for fn in filenames:
     with open(FOLDERNAME+"/"+fn, "r") as pdfFile:
-        print(fn)
+        print fn
         try:
             parsedPdfFile = PdfFileReader(pdfFile)
         except:
-            print("ERROR READING PDF: " + fn)
+            print "ERROR READING PDF: " + fn
             continue
         contents = parsedPdfFile.getPage(0).extractText().split('\n')
-        contents = [e for e in contents if e != ' ']
+        contents = [e for e in contents if e != u' ']
         floatsInContent = [e for e in contents if ((len(e) == 5) and isFloat(e))]
         if (len(floatsInContent) != QUESTIONSINEVAL):
             if (fn in FLOATSDICT):
                 floatsInContent = FLOATSDICT[fn]
-                print("fixed floats issue")
+                print "fixed floats issue"
             else:
-                print("WARNING: " + fn + " does not have 21 answers.")
-                print(floatsInContent)
+                print "WARNING: " + fn + " does not have 21 answers."
+                print floatsInContent
                 continue
         floatsInContent = [float(e) for e in floatsInContent]
         # get professor last name from file name
@@ -64,7 +64,7 @@ for fn in filenames:
             cInd = contents.index("Course Code:")
             courseName = contents[cInd+2].lower()
         except:
-            print("Could not find course name of " + fn)
+            print "Could not find course name of " + fn
             continue
         try:
             # number of students in course
@@ -73,7 +73,7 @@ for fn in filenames:
             # number of students who filled out evals
             nInd2 = contents.index("Returned")
             numReturned = int(contents[nInd2-1])
-            print("going into except block error fixed")
+            print "going into except block error fixed"
         except:
             if (fn in INDEXDICT):
                 # get course name from file contents
@@ -81,13 +81,13 @@ for fn in filenames:
                 courseName = contents[cInd+2].lower()
                 numEnrolled = INDEXDICT[fn][0]
                 numReturned = INDEXDICT[fn][1]
-                print("indices error fixed")
+                print "indices error fixed"
             else:
-                print("ERROR could not find all indices in " + fn)
+                print "ERROR could not find all indices in " + fn
                 continue
 
         courseName = CLEANCOURSENAME.sub('', courseName)
-        print(profName + " " + courseName + " " + str(numEnrolled) + " " + str(numReturned))
+        print profName + " " + courseName + " " + str(numEnrolled) + " " + str(numReturned)
         #print floatsInContent
         #print courseName
         #put in psql database

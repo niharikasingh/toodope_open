@@ -14,7 +14,7 @@ def cleanDocx(fn):
     newNameArray = fn.split("_")
     randomWord = random.choice(rwl)
     newName = "_".join(newNameArray[:-1]) + "_" + randomWord + ".docx"
-    print("Writing: " + newName)
+    print "Writing: " + newName
     document.save("temp/c"+newName)
     return
 
@@ -27,7 +27,7 @@ def cleanPdf(fn):
     newNameArray = fn.split("_")
     randomWord = random.choice(rwl)
     newName = "_".join(newNameArray[:-1]) + "_" + randomWord + ".pdf"
-    print("Writing: " + newName)
+    print "Writing: " + newName
     writer.write("temp/c"+newName)
     return
 
@@ -42,8 +42,8 @@ for fn in filenames:
     if ((fn.count(".") > 1) or (fn.startswith('.'))):
         continue
     if (fn[-5:] == ".docx"):
-        print("Cleaning DOCX: " + fn)
+        print "Cleaning DOCX: " + fn
         cleanDocx(fn)
     elif (fn[-4:] == ".pdf"):
-        print("Cleaning PDF: " + fn)
+        print "Cleaning PDF: " + fn
         cleanPdf(fn)

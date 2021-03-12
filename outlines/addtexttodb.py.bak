@@ -37,8 +37,8 @@ for i in range(2989, 8891):
     try:
         cur.execute("SELECT * FROM outlinestable WHERE id=%s", [i])
     except psycopg2.Error as e:
-        print(["ERROR retrieving entry with id", i])
-        print(e)
+        print ["ERROR retrieving entry with id", i]
+        print e
         cur.close()
         continue
 
@@ -52,8 +52,8 @@ for i in range(2989, 8891):
         s3.download_file(BN, docname, LOCALDIR+docname)
         text = textract.process(LOCALDIR+docname)
     except Exception as e:
-        print(["ERROR getting text from file", docname])
-        print(e)
+        print ["ERROR getting text from file", docname]
+        print e
         if os.path.exists(LOCALDIR+docname):
             os.remove(LOCALDIR+docname)
         cur.close()
@@ -62,8 +62,8 @@ for i in range(2989, 8891):
     try:
         cur.execute("UPDATE outlinestable SET content=%s WHERE id=%s", [text, i])
     except Exception as e:
-        print(["ERROR adding text for id", i])
-        print(e)
+        print ["ERROR adding text for id", i]
+        print e
         os.remove(LOCALDIR+docname)
         cur.close()
         continue

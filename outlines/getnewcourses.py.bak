@@ -31,6 +31,6 @@ for mpn in multiplepn:
         #print "ADDING PROFESSOR " + smpns
         professorList.add(smpns)
 
-print(classList)
-print("\n\n------\n\n")
-print(professorList)
+print classList
+print "\n\n------\n\n"
+print professorList

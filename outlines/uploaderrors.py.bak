@@ -38,7 +38,7 @@ gradeArray = ["DS", "H", "P", "LP"]
 doctypeArray = ["Outline", "Exam"]
 
 def sendToDb(f):
-    print(dbConnStr)
+    print dbConnStr
     conn = psycopg2.connect(dbConnStr)
     cur = conn.cursor()
     elems = f.split("_")
@@ -94,16 +94,16 @@ def sendToDb(f):
     try:
         cur.execute("INSERT INTO outlinestable VALUES (%s, %s, %s, %s, 0, '{}', %s, %s, %s, %s, %s)", [T_id, T_docname, T_course, T_professorlast, T_grade, T_semester, T_year, T_doctype, T_random])
     except psycopg2.Error as e:
-        print("---ERROR---")
+        print "---ERROR---"
         curQuery = "INSERT INTO outlinestable VALUES (%d, %s, %s, %s, 0, '{}', %s, %s, %s, %s, %s)" %(T_id, T_docname, T_course, T_professorlast, T_grade, T_semester, str(T_year), T_doctype, T_random)
-        print(curQuery)
-        print(e)
+        print curQuery
+        print e
     conn.commit()
     cur.close()
     conn.close()
 
 def cleanDocx(fn):
-    print("Cleaning: " + fn)
+    print "Cleaning: " + fn
     document = Document(fn)
     core_properties = document.core_properties
     core_properties.author = ""
@@ -111,12 +111,12 @@ def cleanDocx(fn):
     newNameArray = fn.split("_")
     randomWord = random.choice(rwl)
     newName = "_".join(newNameArray[:-1]) + "_" + randomWord + "_" + str(index) + ".docx"
-    print("Writing: " + newName)
+    print "Writing: " + newName
     document.save(newName)
     return newName
 
 def cleanPdf(fn):
-    print("Cleaning: " + fn)
+    print "Cleaning: " + fn
     document = PdfReader(fn)
     writer = PdfWriter()
     writer.trailer = document
@@ -125,7 +125,7 @@ def cleanPdf(fn):
     newNameArray = fn.split("_")
     randomWord = random.choice(rwl)
     newName = "_".join(newNameArray[:-1]) + "_" + randomWord + "_" + str(index) + ".pdf"
-    print("Writing: " + newName)
+    print "Writing: " + newName
     writer.write(newName)
     return newName
 
@@ -173,7 +173,7 @@ p_replacements = {
 ############ MAIN FUNCTION ##############
 
 def cleanscript(f):
-    print("Processing file " + f)
+    print "Processing file " + f
     global index
     with psycopg2.connect(dbConnStr) as conn:
         with conn.cursor() as cur:
@@ -188,16 +188,16 @@ def cleanscript(f):
     cleanF = ""
     #don't want files with multiple formats
     if (newF[-5:] == ".docx"):
-        print("Cleaning DOCX: " + newF)
+        print "Cleaning DOCX: " + newF
         cleanF = cleanDocx(newF)
     elif (newF[-4:] == ".pdf"):
-        print("Cleaning PDF: " + newF)
+        print "Cleaning PDF: " + newF
         cleanF = cleanPdf(newF)
     else:
         return
 
     s3.upload_file(cleanF, BN, cleanF[len(LPREF):])
-    print("Uploading clean file " + cleanF)
+    print "Uploading clean file " + cleanF
     os.remove(newF)
     os.remove(cleanF)
     sendToDb(cleanF[len(LPREF):])

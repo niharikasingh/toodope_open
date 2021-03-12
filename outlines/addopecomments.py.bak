@@ -34,10 +34,10 @@ with open('dopeevalscomments.tsv') as cfile:
         try:
             cur.execute("UPDATE dopeevals SET comments=%s WHERE legacyid=%s", [comment, legacyid])
         except psycopg2.Error as e:
-            print("---ERROR---")
+            print "---ERROR---"
             curQuery = "UPDATE dopeevals SET comments=%s WHERE legacyid=%s" %(comment, legacyid)
-            print(curQuery)
-            print(e)
+            print curQuery
+            print e
 
 # Close communication with the database
 conn.commit()
