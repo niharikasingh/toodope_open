@@ -19,12 +19,12 @@ cur = conn.cursor()
 with open('yr.txt') as hf:
     for line in hf:
         (docId, numHearts) = line.rstrip().split(" ")
-        print("UPDATE outlinestable SET year = %s WHERE id = %s AND year IS NULL" %(numHearts, docId))
+        print "UPDATE outlinestable SET year = %s WHERE id = %s AND year IS NULL" %(numHearts, docId)
         try:
             cur.execute("UPDATE outlinestable SET year = %s WHERE id = %s AND year IS NULL", [numHearts, docId])
         except psycopg2.Error as e:
-            print("---ERROR---")
-            print(e)
+            print "---ERROR---"
+            print e
 
 # Close communication with the database
 conn.commit()

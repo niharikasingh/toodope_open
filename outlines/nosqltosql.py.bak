@@ -34,7 +34,7 @@ doctypeArray = ["Outline", "Exam"]
 for course in outlineDict:
     for professor in outlineDict[course]:
         for o in outlineDict[course][professor]:
-            print(o)
+            print o
             elems = o.split("_")
             T_id = int(elems[-1].split(".")[0])
             T_docname = o
@@ -67,12 +67,12 @@ for course in outlineDict:
                     cur.execute("INSERT INTO outlinestable VALUES (%s, %s, %s, %s, 0, '{}', %s, %s, %s, %s, %s)", [T_id, T_docname, T_course, T_professorlast, T_grade, T_semester, T_year, T_doctype, T_random])
                     seenIDs.append(T_id)
                 except psycopg2.Error as e:
-                    print("---ERROR---")
+                    print "---ERROR---"
                     curQuery = "INSERT INTO outlinestable VALUES (%d, %s, %s, %s, 0, '{}', %s, %s, %s, %s, %s)" %(T_id, T_docname, T_course, T_professorlast, T_grade, T_semester, str(T_year), T_doctype, T_random)
-                    print(curQuery)
-                    print(e)
+                    print curQuery
+                    print e
             else:
-                print("SEEN: " + o)
+                print "SEEN: " + o
 
 # Close communication with the database
 conn.commit()

@@ -149,8 +149,8 @@ with open("evals_F16/dopeevalserror.txt") as dopefile:
         try:
             cur.execute("INSERT INTO dopeevals VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", [legacyid, course, professor, interaction, feelings, laptops, reading, exam, attendance, success, difficulty, grades, preferencing, inclusive])
         except:
-            print("ERROR DB - ")
-            print(elem)
+            print "ERROR DB - "
+            print elem
 
 # Close communication with the database
 conn.commit()
