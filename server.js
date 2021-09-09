@@ -1,5 +1,4 @@
 const express = require('express');
-const {OAuth2Client} = require('google-auth-library');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const pg = require('pg');
@@ -39,27 +38,6 @@ require('./server/search.js').setApp(app, pool, urlencodedParser);
 require('./server/textbooks.js').setApp(app, pool);
 require('./server/evaluations.js').setApp(app, pool);
 require('./server/encourage.js').setApp(app, pool, urlencodedParser);
-
-// Sign in through Google
-app.post('/verifyToken', urlencodedParser, function (req, res) {
-  const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-  async function verify() {
-    const ticket = await client.verifyIdToken({
-      idToken: req.body.idtoken,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
-    const payload = ticket.getPayload();
-    const userid = payload['sub'];
-    const domain = payload['hd'];
-    if (domain && domain.endsWith("harvard.edu")) {
-      res.send("Success.");
-    }
-    else {
-      res.send("Not Harvard login.");
-    }
-  }
-  verify().catch(console.error);
-});
 
 // global error handler
 app.get('/globalError', function (req, res) {

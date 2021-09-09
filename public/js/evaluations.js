@@ -561,13 +561,7 @@ function onLoadCallback() {
   });
 }
 
-function onSignIn(guser) {
-  //sign-in
-  var profile = guser.getBasicProfile();
-  $("#userLogin").prepend("Signed in as " + profile.getEmail());
-  userName = profile.getEmail();
-  userName = userName.replace(/harvard\.edu/g, "");
-  userName = userName.replace(/[@\.]/g, "_");
+function onSignIn() {
   //analytics
   (function (i, s, o, g, r, a, m) {
     i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
@@ -576,14 +570,9 @@ function onSignIn(guser) {
       m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
   })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
   ga('create', 'UA-90767777-1', 'auto');
-  ga('set', 'userId', profile.getEmail()); // Set the user ID using signed-in user_id.
   ga('send', 'pageview');
   // -------- ENCOURAGE SUBMISSIONS ----------
   encourageSubmissions();
-}
-
-function onFailure(e) {
-  console.log("Sign in failed.");
 }
 
 //----------- PERFORM UPLOAD -----------

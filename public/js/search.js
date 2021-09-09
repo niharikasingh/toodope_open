@@ -17,9 +17,6 @@ $(document).ready(function(){
       }
   });
 
-  // ------- GOOGLE SIGN-IN ----------
-  $("#g-signin2").hide();
-
   // -------- RESPONSIVE MENU ------------
   $('.handle').on('click', function(){
        $('nav ul').toggleClass('showing');
@@ -68,13 +65,6 @@ $(document).ready(function(){
         console.log("INCREMENTING ERROR: " + error);
       }
     });
-  });
-
-  // sign out
-  $("#signout").click(function(e) {
-    var auth2 = gapi.auth2.getAuthInstance()
-    auth2.signOut();
-    window.location.replace("/index.html");
   });
 
   // toggle between upload and search bars
@@ -271,6 +261,12 @@ function positionDisplayOutlines() {
 
 
 //----------GOOGLE SIGN IN AND ANALYTICS-------------
+// sign out
+$("#signout").click(function(e) {
+  var auth2 = gapi.auth2.getAuthInstance()
+  auth2.signOut();
+  window.location.replace("/index.html");
+});
 var userName = "";
 function onLoadCallback() {
   var auth2;
@@ -284,27 +280,16 @@ function onLoadCallback() {
   });
 }
 
-function onSignIn(guser) {
-  //sign-in
-  var profile = guser.getBasicProfile();
-  $("#userLogin").prepend("Signed in as " + profile.getEmail());
-  userName = profile.getEmail();
-  userName = userName.replace(/harvard\.edu/g, "");
-  userName = userName.replace(/[@\.]/g, "_");
+function onSignIn() {
   //analytics
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-90767777-1', 'auto');
-  ga('set', 'userId', profile.getEmail()); // Set the user ID using signed-in user_id.
   ga('send', 'pageview');
   // -------- ENCOURAGE SUBMISSIONS ----------
   encourageSubmissions();
-}
-
-function onFailure(e) {
-  console.log("Sign in failed.");
 }
 
 //----------- PERFORM UPLOAD -----------

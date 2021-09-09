@@ -31,24 +31,15 @@ function onLoadCallback() {
   });
 }
 
-function onSignIn(guser) {
-  var profile = guser.getBasicProfile();
-  $("#userLogin").prepend("Signed in as " + profile.getEmail());
-  userEmail = profile.getEmail();
-
+function onSignIn() {
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
   ga('create', 'UA-90767777-1', 'auto');
-  ga('set', 'userId', profile.getEmail()); // Set the user ID using signed-in user_id.
   ga('send', 'pageview');
 
-}
-
-function onFailure(e) {
-  console.log("Sign in failed.");
 }
 
 window.onerror = function (msg, url, lineNo, columnNo, error) {

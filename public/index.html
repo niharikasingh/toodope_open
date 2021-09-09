@@ -8,8 +8,6 @@
   <title>Too Dope</title>
   <meta name="description" content="Law school outlines, by classmates, for classmates.">
   <meta name="author" content="Neha Singh">
-  <meta name="google-signin-scope" content="profile email">
-  <meta name="google-signin-client_id" content="278291095930-07rv5urr6uaeepbj1bpkrlugp29hk7ps.apps.googleusercontent.com">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -27,7 +25,7 @@
   <!-- Scripts
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
+  
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -49,49 +47,48 @@
 <div class="container">
   <div class="row selector">
     <div class="twelve columns" id="signin">
-      <div class="g-signin2" id="g-signin2" data-onsuccess="onSignIn" data-onfailure="onFailure"></div>
+
+      <script src="https://accounts.google.com/gsi/client" async defer></script>
+      <div id="g_id_onload"
+           data-client_id="278291095930-07rv5urr6uaeepbj1bpkrlugp29hk7ps.apps.googleusercontent.com"
+           data-context="signin"
+           data-ux_mode="popup"
+           data-callback="handleCredentialResponse"
+           data-auto_prompt="false">
+      </div>
+
+      <div class="g_id_signin"
+           data-type="standard"
+           data-shape="rectangular"
+           data-theme="outline"
+           data-text="signin_with"
+           data-size="large"
+           data-logo_alignment="left"
+           data-width="44">
+      </div>
+
       <script>
-      var auth2;
-
-      function onSignIn(googleUser) {
-        // Useful data for your client-side scripts:
-        var profile = googleUser.getBasicProfile();
-
-        console.log("Email: " + profile.getEmail());
-
-        // The ID token you need to pass to your backend:
-        var id_token = googleUser.getAuthResponse().id_token;
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/verifyToken');
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function() {
-          if (xhr.responseText.indexOf("Not Harvard login.") == -1) {
-            console.log('Signed in as: ' + xhr.responseText);
+        function handleCredentialResponse(response) {
+          const encryptedPayload = response.credential.split('.')[1];
+          const responsePayload = JSON.parse(atob(encryptedPayload));
+          if (responsePayload.email.endsWith('harvard.edu')) {
             window.location.replace("/search.html");
           }
-          else {
-            auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut();
-          }
-        };
-        xhr.send('idtoken=' + id_token + "&email=" + profile.getEmail());
-        console.log("ID Token: " + id_token);
-      };
-      function onFailure(e) {
-        console.log(e);
-      }
-
-      // Analytics
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-90767777-1', 'auto');
-
-      ga('send', 'pageview');
-
+        }
       </script>
+
+      <script>
+        // Analytics
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-90767777-1', 'auto');
+
+        ga('send', 'pageview');
+      </script>
+
       <br>Use your Harvard e-mail account to sign in.
     </div>
   </div>
@@ -127,7 +124,6 @@
         <li>If you use a privacy blocker, add "toodope.org" to your list of trusted websites</li>
         <li>Use Google Chrome as your browser for accessing this website</li>
         <li>Allow third-party cookies (the eye icon in address bar in Google Chrome should not have a line through it)</li>
-        <li>Make sure your address bar says <b>http</b>://www.toodope.org, not <b>https</b>://www.toodope.org. If you want to use https, you can go to https://toodope.herokuapp.com/.</li>
         <li>E-mail admin@toodope.org for more help</li>
       </ul>
     </div>
