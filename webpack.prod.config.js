@@ -1,4 +1,4 @@
-var webpack = require('webpack')
+//var webpack = require('webpack')
 
 module.exports = {
   entry: {
@@ -8,11 +8,11 @@ module.exports = {
   output: {
     filename: './public/js/[name]bundle.js'
   },
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
-      }
-    })
-  ]
+  // plugins: [
+  //   new webpack.optimize.UglifyJsPlugin({
+  //     compressor: {
+  //       warnings: false
+  //     }
+  //   })
+  // ]
 };

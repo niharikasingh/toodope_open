@@ -1,14 +1,14 @@
 const aws = require('aws-sdk');
-const kue = require('kue');
+import { Queue, Worker } from 'bullmq';
+import IORedis from 'ioredis';
 const pythonShell = require('python-shell');
 const util = require('util');
 
 exports.setApp = function (app, pool, urlencodedParser) {
 
   // initialize jobs queue used to anonymize uploads
-  var jobs = kue.createQueue({
-      redis: process.env.REDIS_URL
-  });
+  const connection = new IORedis(process.env.REDIS_URL);
+  const queue = new Queue('pyclean', { connection });
 
   app.get('/searchOutlines', function (req, res) {
     var searchParams = req.query;
@@ -153,14 +153,12 @@ exports.setApp = function (app, pool, urlencodedParser) {
       res.write(JSON.stringify(returnData));
       res.end();
     });
-    var thisjob = jobs.create('pyclean', {
-        filename: fileName
-    });
-    thisjob.save();
+    queue.add('file', { filename: fileName });
   });
 
   // Send anonymization to python
-  jobs.process('pyclean', function(job, done) {
+  const worker = new Worker('pyclean', async job => {
+    if (job.name === 'file') {
       var pythonOptions = {
         mode: 'text',
         args: [job.data.filename]
@@ -173,11 +171,10 @@ exports.setApp = function (app, pool, urlencodedParser) {
         pyclean.end(function (err) {
           if (err) {
             console.error('PYCLEAN error: ' + err);
-            done(err);
           }
-          done();
         });
       }, 10000);
-  });
+    }
+  }, { connection });
 
 };
