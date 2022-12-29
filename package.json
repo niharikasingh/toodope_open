@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "aws-sdk": "^2.729.0",
-    "babel-loader": "^7.1.2",
+    "babel-loader": "^9.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
@@ -33,7 +33,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.13.1",
     "redis": "2.6.5",
-    "webpack": "^4.44.1",
+    "webpack": "^5.75.0",
     "xml2js": "0.4.17"
   },
   "engines": {
