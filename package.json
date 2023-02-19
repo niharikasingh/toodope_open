@@ -11,7 +11,7 @@
   "dependencies": {
     "@blueprintjs/core": "^2.1.1",
     "react-transition-group": "^2.3.0",
-    "victory": "^0.24.5"
+    "victory": "^36.6.8"
   },
   "devDependencies": {
     "aws-sdk": "^2.814.0",
