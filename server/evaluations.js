@@ -9,22 +9,23 @@ exports.setApp = function (app, pool) {
     var professor = searchParams["professor"]
     professor = professor.replace(/[^-a-z0-9 \/]/g , "");
     var queryString = "SELECT * FROM hlsevals WHERE";
-    if (course.length == 0) queryString += util.format(" professor LIKE '%%%s%%'", professor);
-    else if (professor.length == 0) queryString += util.format(" course LIKE '%%%s%%'", course);
-    else queryString += util.format(" professor LIKE '%%%s%%' AND course LIKE '%%%s%%'", professor, course);
+    const queryValues = [];
+    if (course.length == 0) {
+      queryString += ` professor LIKE $1`;
+      queryValues.push('%' + professor + '%');
+    }
+    else if (professor.length == 0) {
+      queryString += " course LIKE $1";
+      queryValues.push('%' + course + '%');
+    }
+    else {
+      queryString += " professor LIKE $1 AND course LIKE $2";
+      queryValues.push('%' + professor + '%', '%' + course + '%');
+    };
     queryString += " ORDER BY year DESC, semester DESC;";
-    pool.connect(function(err, client, done) {
-      if(err) {
-        return console.error('error fetching client from pool', err);
-      }
-      client.query(queryString, function(err, result) {
-        done();  //release the client back to the pool
-        if(err) {
-          return console.error('error running query', err);
-        }
-        res.send(result.rows);
-      });
-    });
+    pool.query(queryString, queryValues)
+      .then((result) => res.send(result.rows))
+      .catch((err) => console.error('error running query', err, queryString));
   });
 
   app.get('/searchDopeComments', function (req, res) {
@@ -34,22 +35,23 @@ exports.setApp = function (app, pool) {
     var professor = searchParams["professor"]
     professor = professor.replace(/[^-a-z0-9 \/]/g , "");
     var queryString = "SELECT * FROM dopeevals WHERE";
-    if (course.length == 0) queryString += util.format(" professor LIKE '%%%s'", professor);
-    else if (professor.length == 0) queryString += util.format(" course LIKE '%%%s%%'", course);
-    else queryString += util.format(" professor LIKE '%%%s' AND course LIKE '%%%s%%'", professor, course);
+    const queryValues = [];
+    if (course.length == 0) {
+      queryString += " professor LIKE $1";
+      queryValues.push('%' + professor + '%');
+    }
+    else if (professor.length == 0) {
+      queryString += " course LIKE $1";
+      queryValues.push('%' + course + '%');
+    }
+    else {
+      queryString += " professor LIKE $1 AND course LIKE $2";
+      queryValues.push('%' + professor + '%', '%' + course + '%');
+    }
     queryString += " AND grades <> 0 ORDER BY adddate DESC;";
-    pool.connect(function(err, client, done) {
-      if(err) {
-        return console.error('error fetching client from pool', err);
-      }
-      client.query(queryString, function(err, result) {
-        done();  //release the client back to the pool
-        if(err) {
-          return console.error('error running query', err);
-        }
-        res.send(result.rows);
-      });
-    });
+    pool.query(queryString, queryValues)
+      .then((result) => res.send(result.rows))
+      .catch((err) => console.error('error running query', err, queryString));
   });
 
   app.get('/searchDopeEvals', function (req, res) {
@@ -70,21 +72,22 @@ exports.setApp = function (app, pool) {
     queryString += " mode() WITHIN GROUP (ORDER BY preferencing) FILTER (WHERE preferencing != 0) AS preferencing,";
     queryString += " mode() WITHIN GROUP (ORDER BY inclusive) FILTER (WHERE inclusive != 0) AS inclusive";
     queryString += " FROM dopeevals WHERE";
-    if (course.length == 0) queryString += util.format(" professor LIKE '%%%s';", professor);
-    else if (professor.length == 0) queryString += util.format(" course LIKE '%%%s%%';", course);
-    else queryString += util.format(" professor LIKE '%%%s' AND course LIKE '%%%s%%';", professor, course);
-    pool.connect(function(err, client, done) {
-      if(err) {
-        return console.error('error fetching client from pool', err);
-      }
-      client.query(queryString, function(err, result) {
-        done();  //release the client back to the pool
-        if(err) {
-          return console.error('error running query', err);
-        }
-        res.send(result.rows);
-      });
-    });
+    const queryValues = [];
+    if (course.length == 0) {
+      queryString += " professor LIKE $1";
+      queryValues.push('%' + professor + '%');
+    }
+    else if (professor.length == 0) {
+      queryString += " course LIKE $1";
+      queryValues.push('%' + course + '%');
+    }
+    else {
+      queryString += " professor LIKE $1 AND course LIKE $2";
+      queryValues.push('%' + professor + '%', '%' + course + '%');
+    }
+    pool.query(queryString, queryValues)
+      .then((result) => res.send(result.rows))
+      .catch((err) => console.error('error running query', err, queryString));
   });
 
   app.get('/uploadEval', function (req, res) {
@@ -107,21 +110,10 @@ exports.setApp = function (app, pool) {
     var inclusive = searchParams["inclusive"];
     var comments = searchParams["comments"];
     comments = comments.replace(/[<>]/g , "");
-    var queryString = util.format("INSERT INTO dopeevals VALUES (DEFAULT, 0, '%s', '%s', %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, DEFAULT, '%s');", course, professor, interaction, feelings, laptops, reading, exam, attendance, success, difficulty, grades, preferencing, inclusive, comments);
-    pool.connect(function(err, client, done) {
-      if(err) {
-        return console.error('error fetching client from pool', err);
-        res.status(400).send();
-      }
-      client.query("INSERT INTO dopeevals VALUES (DEFAULT, 0, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, DEFAULT, $14)", [course, professor, interaction, feelings, laptops, reading, exam, attendance, success, difficulty, grades, preferencing, inclusive, comments], function(err, result) {
-        done();  //release the client back to the pool
-        res.send(true);
-        if(err) {
-          return console.error('error running query', err);
-          res.status(400).send();
-        }
-      });
-    });
+    const queryString = "INSERT INTO dopeevals VALUES (DEFAULT, 0, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, DEFAULT, $14)";
+    const queryValues = [course, professor, interaction, feelings, laptops, reading, exam, attendance, success, difficulty, grades, preferencing, inclusive, comments];
+    pool.query(queryString, queryValues)
+      .catch((err) => console.error('error running query', err, queryString));
   });
 
 }

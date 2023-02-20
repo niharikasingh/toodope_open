@@ -2,7 +2,7 @@ const express = require('express');
 const {OAuth2Client} = require('google-auth-library');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const pg = require('pg');
+const { Pool } = require('pg');
 require('dotenv').config();
 
 // TODO get sean to test CORS
@@ -21,7 +21,7 @@ app.listen(parseInt(process.env.PORT));
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 // set up postgresql database
-var pgconfig = {
+const pgconfig = {
   user: process.env.PGUSER,
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
@@ -30,7 +30,7 @@ var pgconfig = {
   max: 3, // max number of clients in the pool
   idleTimeoutMillis: 30000 // client will remain idle before being closed
 };
-var pool = new pg.Pool(pgconfig);
+const pool = new Pool(pgconfig);
 pool.on('error', function (err, client) {
   console.error('idle client error', err.message, err.stack)
 })

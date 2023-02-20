@@ -1,4 +1,4 @@
-const aws = require('aws-sdk');
+const aws = require('@aws-sdk/client-s3');
 const kue = require('kue');
 const pythonShell = require('python-shell');
 const util = require('util');
@@ -81,18 +81,9 @@ exports.setApp = function (app, pool, urlencodedParser) {
     }
     queryString += " ORDER BY hearts DESC, id DESC;";
     // execute query
-    pool.connect(function(err, client, done) {
-      if(err) {
-        return console.error('error fetching client from pool', err);
-      }
-      client.query(queryString, queryValues, function(err, result) {
-        done();  //release the client back to the pool
-        if(err) {
-          return console.error('error running query', err, queryString);
-        }
-        res.send(result.rows);
-      });
-    });
+    pool.query(queryString, queryValues)
+      .then((result) => res.send(result.rows))
+      .catch((err) => console.error('error running query', err, queryString));
   });
 
   // user favorited or unfavorited an outline
@@ -111,17 +102,8 @@ exports.setApp = function (app, pool, urlencodedParser) {
       queryString = util.format("UPDATE outlinestable SET hearts=hearts-1 WHERE id=%d;", outlineID);
       queryString += util.format("UPDATE outlinestable SET userhearts=array_remove(userhearts, '%s') WHERE id=%d", userName, outlineID);
     }
-    pool.connect(function(err, client, done) {
-      if(err) {
-        return console.error('error fetching client from pool', err);
-      }
-      client.query(queryString, function(err, result) {
-        done();  //release the client back to the pool
-        if(err) {
-          return console.error('error running query', err);
-        }
-      });
-    });
+    pool.query(queryString)
+      .catch((err) => console.error('error running query', err.stack))
   });
 
   // anonymize and upload outlines
