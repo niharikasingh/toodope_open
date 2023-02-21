@@ -159,7 +159,10 @@ $primary-brown: rgb(95,60,60);
 }
 
 #signin {
-  text-align:center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #userInfoBar {

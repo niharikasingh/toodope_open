@@ -1,5 +1,11 @@
 $(document).ready(function () {
 
+  if (localStorage.getItem("isSignedIn") !== 'true') {
+    window.location.replace("/index.html");
+  } else {
+    handleSignedIn();
+  }
+
   // ----- AUTOCOMPLETE ----------
   new Awesomplete(document.getElementById("courseName"), { list: classList });
   new Awesomplete(document.getElementById("professorName"), { list: professorList });
@@ -32,8 +38,7 @@ $(document).ready(function () {
 
   // sign out
   $("#signout").click(function (e) {
-    var auth2 = gapi.auth2.getAuthInstance()
-    auth2.signOut();
+    localStorage.setItem("isSignedIn", 'false');
     window.location.replace("/index.html");
   });
 
@@ -472,7 +477,7 @@ function displayIndividualReviews(data) {
   appendStr += "<ul>";
 
   for (i = 0; i < data.length; i++) {
-    // within one individual review, start list of each field of the review: grades, difficulty, comments if applicable 
+    // within one individual review, start list of each field of the review: grades, difficulty, comments if applicable
     appendStr += "<li class='dopeComment' tabindex='0'>"
     var currData = data[i];
     appendStr += "ADDED: " + currData.adddate.slice(0, 4);
@@ -489,7 +494,7 @@ function displayIndividualReviews(data) {
     // the first /li ends the "comments" list item, while the second marks the end of this individual review
     if (data[i].comments && data[i].comments.length != 0) appendStr += "<li> COMMENTS: " + data[i].comments + "</li></ul></li>";
 
-    // within one individual review, end list of each field of the review: grades, difficulty, comments if applicable 
+    // within one individual review, end list of each field of the review: grades, difficulty, comments if applicable
     else appendStr += "</ul></li>";
   }
 
@@ -549,23 +554,12 @@ function positionDisplayOutlines() {
 
 //----------GOOGLE SIGN IN AND ANALYTICS-------------
 var userName = "";
-function onLoadCallback() {
-  var auth2;
-  gapi.load('auth2', function () {
-    auth2 = gapi.auth2.init();
-    auth2.then(function () {
-      if (auth2.isSignedIn.get() == false) {
-        window.location.replace("/index.html");
-      }
-    });
-  });
-}
 
-function onSignIn(guser) {
+function handleSignedIn() {
   //sign-in
-  var profile = guser.getBasicProfile();
-  $("#userLogin").prepend("Signed in as " + profile.getEmail());
-  userName = profile.getEmail();
+  const email = localStorage.getItem("email");
+  $("#userLogin").prepend("Signed in as " + email);
+  userName = email;
   userName = userName.replace(/harvard\.edu/g, "");
   userName = userName.replace(/[@\.]/g, "_");
   //analytics
@@ -576,7 +570,7 @@ function onSignIn(guser) {
       m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
   })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
   ga('create', 'UA-90767777-1', 'auto');
-  ga('set', 'userId', profile.getEmail()); // Set the user ID using signed-in user_id.
+  ga('set', 'userId', email); // Set the user ID using signed-in user_id.
   ga('send', 'pageview');
   // -------- ENCOURAGE SUBMISSIONS ----------
   encourageSubmissions();

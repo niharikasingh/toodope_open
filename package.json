@@ -25,7 +25,6 @@
     "dotenv": "4.0.0",
     "ejs": "3.x",
     "express": "^4.17.3",
-    "google-auth-library": "8.7.0",
     "kue": "0.11.5",
     "moment": "2.29.4",
     "pg": "^8.9.0",

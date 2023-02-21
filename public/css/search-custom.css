@@ -122,7 +122,10 @@
   margin: 0 auto; }
 
 #signin {
-  text-align: center; }
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
 
 #userInfoBar {
   font-size: 12px;
