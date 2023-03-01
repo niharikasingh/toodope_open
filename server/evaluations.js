@@ -1,5 +1,3 @@
-const util = require('util');
-
 exports.setApp = function (app, pool) {
 
   app.get('/searchHlsEvals', function (req, res) {
@@ -113,6 +111,7 @@ exports.setApp = function (app, pool) {
     const queryString = "INSERT INTO dopeevals VALUES (DEFAULT, 0, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, DEFAULT, $14)";
     const queryValues = [course, professor, interaction, feelings, laptops, reading, exam, attendance, success, difficulty, grades, preferencing, inclusive, comments];
     pool.query(queryString, queryValues)
+      .then(() => res.send(true))
       .catch((err) => console.error('error running query', err, queryString));
   });
 

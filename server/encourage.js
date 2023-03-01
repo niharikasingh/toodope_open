@@ -36,6 +36,7 @@ exports.setApp = function (app, pool, urlencodedParser) {
     var queryValues = [userName];
 
     pool.query(queryString, queryValues)
+      .then(() => res.end())
       .catch((err) => console.error('error running query', err, queryString));
   });
 

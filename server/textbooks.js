@@ -153,6 +153,7 @@ exports.setApp = function (app, pool) {
     const queryString = "INSERT INTO textbooks VALUES (DEFAULT, $1, $2, $3, $4, false, DEFAULT);";
     const queryValues = [parseInt(isbn), users, parseFloat(price), condition];
     pool.query(queryString, queryValues)
+      .then(() => res.send(true))
       .catch((err) => console.error('error running query', err, queryString));
   });
 
