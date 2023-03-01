@@ -1,4 +1,5 @@
-const aws = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const kue = require('kue');
 const pythonShell = require('python-shell');
 const util = require('util');
@@ -107,15 +108,14 @@ exports.setApp = function (app, pool, urlencodedParser) {
   });
 
   // anonymize and upload outlines
-  app.get('/sign-s3', (req, res) => {
-    const s3 = new aws.S3({
+  app.get('/sign-s3', async (req, res) => {
+    const s3 = new S3Client({
       signatureVersion: 'v4',
       region: 'us-east-2'
     });
     const fileName = req.query['file-name'];
     const fileType = req.query['file-type'];
     if ((fileName.substr(-4,4) != ".pdf") && (fileName.substr(-5,5) != ".docx")) res.status(400).send("Incorrect file type.");
-
     const s3Params = {
       Bucket: process.env.S3_BUCKET,
       Key: fileName,
@@ -123,18 +123,14 @@ exports.setApp = function (app, pool, urlencodedParser) {
       ContentType: fileType,
       ACL: 'public-read'
     };
-    s3.getSignedUrl('putObject', s3Params, (err, data) => {
-      if(err){
-        console.error(err);
-        return res.end();
-      }
-      const returnData = {
-        signedRequest: data,
-        url: `https://${s3Params.Bucket}.s3.amazonaws.com/${fileName}`
-      };
-      res.write(JSON.stringify(returnData));
-      res.end();
-    });
+    const command = new PutObjectCommand(s3Params);
+    const data = await getSignedUrl(s3, command, { expiresIn: 3600 });
+    const returnData = {
+      signedRequest: data,
+      url: `https://${s3Params.Bucket}.s3.amazonaws.com/${fileName}`
+    };
+    res.write(JSON.stringify(returnData));
+    res.end();
     var thisjob = jobs.create('pyclean', {
         filename: fileName
     });
