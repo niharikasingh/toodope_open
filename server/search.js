@@ -119,12 +119,11 @@ exports.setApp = function (app, pool, urlencodedParser) {
     const s3Params = {
       Bucket: process.env.S3_BUCKET,
       Key: fileName,
-      Expires: 60,
       ContentType: fileType,
       ACL: 'public-read'
     };
     const command = new PutObjectCommand(s3Params);
-    const data = await getSignedUrl(s3, command, { expiresIn: 3600 });
+    const data = await getSignedUrl(s3, command);
     const returnData = {
       signedRequest: data,
       url: `https://${s3Params.Bucket}.s3.amazonaws.com/${fileName}`
