@@ -28,8 +28,5 @@ MIT
 
 If you're a student org looking to set up your own outline bank, feel free to use this code as a template.
 
-## Other worthy projects
-If you're a lawyer or a law school student with a cool project that you want help with or feedback on, list it here.
-
 ## Note to self
 I upload outlines/reviews under professor name "testing" and course name "testing" to test that nothing broke after my latest changes.

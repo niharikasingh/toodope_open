@@ -1,7 +1,7 @@
 .env
 awsSettings.txt
 dump.rdb
-node_modules/*
+node_modules
 *.css.map
 outlines/*.log
 .DS_Store

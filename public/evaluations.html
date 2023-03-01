@@ -8,8 +8,6 @@
   <title>Too Dope</title>
   <meta name="description" content="Law school outlines, by classmates, for classmates.">
   <meta name="author" content="Neha Singh">
-  <meta name="google-signin-scope" content="profile email">
-  <meta name="google-signin-client_id" content="278291095930-07rv5urr6uaeepbj1bpkrlugp29hk7ps.apps.googleusercontent.com">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -33,7 +31,7 @@
 <script src="js/constants.js"></script>
 <script src="js/evaluations.js"></script>
 <!-- <script src="js/modal.js" async defer></script> -->
-<script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -45,7 +43,7 @@
 
   <div class="container">
     <div class="row" id="userInfoBar">
-      <div class="twelve columns" id="userLogin"><div class="g-signin2 hide" id="g-signin2" data-onsuccess="onSignIn" data-onfailure="onFailure"></div>&nbsp;&nbsp;(<a href=# id="signout">Sign Out</a>)</div>
+      <div class="twelve columns" id="userLogin">&nbsp;&nbsp;(<a href=# id="signout">Sign Out</a>)</div>
     </div>
   </div>
 

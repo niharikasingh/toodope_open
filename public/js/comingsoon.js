@@ -1,5 +1,11 @@
 $(document).ready(function(){
 
+  if (localStorage.getItem("isSignedIn") !== 'true') {
+    window.location.replace("/index.html");
+  } else {
+    handleSignedIn();
+  }
+
   $("#g-signin2").hide();
 
   // nav bar
@@ -10,31 +16,15 @@ $(document).ready(function(){
   // sign out
 
   $("#signout").click(function(e) {
-    var auth2 = gapi.auth2.getAuthInstance()
-    auth2.signOut();
+    localStorage.setItem("isSignedIn", 'false');
     window.location.replace("/index.html");
   });
 
 });
 
-var userEmail = "";
-
-function onLoadCallback() {
-  var auth2;
-  gapi.load('auth2', function() {
-    auth2 = gapi.auth2.init();
-    auth2.then(function() {
-      if (auth2.isSignedIn.get() == false) {
-        window.location.replace("/index.html");
-      }
-    });
-  });
-}
-
-function onSignIn(guser) {
-  var profile = guser.getBasicProfile();
-  $("#userLogin").prepend("Signed in as " + profile.getEmail());
-  userEmail = profile.getEmail();
+function handleSignedIn() {
+  const email = localStorage.getItem("email");
+  $("#userLogin").prepend("Signed in as " + email);
 
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -42,7 +32,7 @@ function onSignIn(guser) {
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
   ga('create', 'UA-90767777-1', 'auto');
-  ga('set', 'userId', profile.getEmail()); // Set the user ID using signed-in user_id.
+  ga('set', 'userId', email); // Set the user ID using signed-in user_id.
   ga('send', 'pageview');
 
 }

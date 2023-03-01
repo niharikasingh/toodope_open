@@ -1,5 +1,11 @@
 $(document).ready(function(){
 
+  if (localStorage.getItem("isSignedIn") !== 'true') {
+    window.location.replace("/index.html");
+  } else {
+    handleSignedIn();
+  }
+
   // ----- SEARCH BUTTON ---------
   $("#tbSearchButton").click(performSearch);
   $("#postButton").click(performUpload);
@@ -36,8 +42,7 @@ $(document).ready(function(){
 
   // sign out
   $("#signout").click(function(e) {
-    var auth2 = gapi.auth2.getAuthInstance()
-    auth2.signOut();
+    localStorage.setItem("isSignedIn", 'false');
     window.location.replace("/index.html");
   });
 
@@ -337,24 +342,13 @@ function removeTextbook() {
 
 //----------GOOGLE SIGN IN AND ANALYTICS-------------
 var userName = "";
-function onLoadCallback() {
-  var auth2;
-  gapi.load('auth2', function() {
-    auth2 = gapi.auth2.init();
-    auth2.then(function() {
-      if (auth2.isSignedIn.get() == false) {
-        window.location.replace("/index.html");
-      }
-    });
-  });
-}
 
-function onSignIn(guser) {
+function handleSignedIn() {
   //sign-in
-  var profile = guser.getBasicProfile();
-  $("#userLogin").prepend("Signed in as " + profile.getEmail());
-  $("#contactMe").val(profile.getEmail());
-  userName = profile.getEmail();
+  const email = localStorage.getItem("email");
+  $("#userLogin").prepend("Signed in as " + email);
+  $("#contactMe").val(email);
+  userName = email;
   getUserTextbooks(userName);
   //analytics
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -362,7 +356,7 @@ function onSignIn(guser) {
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-90767777-1', 'auto');
-  ga('set', 'userId', profile.getEmail()); // Set the user ID using signed-in user_id.
+  ga('set', 'userId', email); // Set the user ID using signed-in user_id.
   ga('send', 'pageview');
 }
 

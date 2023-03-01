@@ -1,4 +1,5 @@
-const aws = require('aws-sdk');
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const kue = require('kue');
 const pythonShell = require('python-shell');
 const util = require('util');
@@ -81,18 +82,9 @@ exports.setApp = function (app, pool, urlencodedParser) {
     }
     queryString += " ORDER BY hearts DESC, id DESC;";
     // execute query
-    pool.connect(function(err, client, done) {
-      if(err) {
-        return console.error('error fetching client from pool', err);
-      }
-      client.query(queryString, queryValues, function(err, result) {
-        done();  //release the client back to the pool
-        if(err) {
-          return console.error('error running query', err, queryString);
-        }
-        res.send(result.rows);
-      });
-    });
+    pool.query(queryString, queryValues)
+      .then((result) => res.send(result.rows))
+      .catch((err) => console.error('error running query', err, queryString));
   });
 
   // user favorited or unfavorited an outline
@@ -111,48 +103,33 @@ exports.setApp = function (app, pool, urlencodedParser) {
       queryString = util.format("UPDATE outlinestable SET hearts=hearts-1 WHERE id=%d;", outlineID);
       queryString += util.format("UPDATE outlinestable SET userhearts=array_remove(userhearts, '%s') WHERE id=%d", userName, outlineID);
     }
-    pool.connect(function(err, client, done) {
-      if(err) {
-        return console.error('error fetching client from pool', err);
-      }
-      client.query(queryString, function(err, result) {
-        done();  //release the client back to the pool
-        if(err) {
-          return console.error('error running query', err);
-        }
-      });
-    });
+    pool.query(queryString)
+      .catch((err) => console.error('error running query', err.stack))
   });
 
   // anonymize and upload outlines
-  app.get('/sign-s3', (req, res) => {
-    const s3 = new aws.S3({
+  app.get('/sign-s3', async (req, res) => {
+    const s3 = new S3Client({
       signatureVersion: 'v4',
       region: 'us-east-2'
     });
     const fileName = req.query['file-name'];
     const fileType = req.query['file-type'];
     if ((fileName.substr(-4,4) != ".pdf") && (fileName.substr(-5,5) != ".docx")) res.status(400).send("Incorrect file type.");
-
     const s3Params = {
       Bucket: process.env.S3_BUCKET,
       Key: fileName,
-      Expires: 60,
       ContentType: fileType,
       ACL: 'public-read'
     };
-    s3.getSignedUrl('putObject', s3Params, (err, data) => {
-      if(err){
-        console.error(err);
-        return res.end();
-      }
-      const returnData = {
-        signedRequest: data,
-        url: `https://${s3Params.Bucket}.s3.amazonaws.com/${fileName}`
-      };
-      res.write(JSON.stringify(returnData));
-      res.end();
-    });
+    const command = new PutObjectCommand(s3Params);
+    const data = await getSignedUrl(s3, command);
+    const returnData = {
+      signedRequest: data,
+      url: `https://${s3Params.Bucket}.s3.amazonaws.com/${fileName}`
+    };
+    res.write(JSON.stringify(returnData));
+    res.end();
     var thisjob = jobs.create('pyclean', {
         filename: fileName
     });

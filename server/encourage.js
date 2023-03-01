@@ -9,31 +9,19 @@ exports.setApp = function (app, pool, urlencodedParser) {
     var page = searchParams["page"];
     page = page.replace(/[^a-z]/g , "");
 
-    if ((userName.slice(-9,-5) != 'lm19') && (userName.slice(-9,-5) != 'jd19') && (userName.slice(-9,-5) != 'jd20')) {
-      res.send(true);
-      return;
-    }
-
     var queryString = "SELECT * FROM encourage WHERE username=$1;";
     var queryValues = [userName];
 
-    pool.connect(function(err, client, done) {
-      if(err) {
-        return console.error('error fetching client from pool', err);
-      }
-      client.query(queryString, queryValues, function(err, result) {
-        done();  //release the client back to the pool
-        if(err) {
-          return console.error('error running query', err, queryString);
-        }
+    pool.query(queryString, queryValues)
+      .then((result) => {
         if (result.rows.length == 0) {
           res.send(false);
         }
         else {
           res.send(result.rows[0][page]);
         }
-      });
-    });
+      })
+      .catch((err) => console.error('error running query', err, queryString));
   });
 
   app.post('/encourage', urlencodedParser, function (req, res) {
@@ -47,17 +35,9 @@ exports.setApp = function (app, pool, urlencodedParser) {
     var queryString = util.format("INSERT INTO encourage (username, %s) VALUES ($1, true) ON CONFLICT (username) DO UPDATE SET %s=EXCLUDED.%s;", page, page, page);
     var queryValues = [userName];
 
-    pool.connect(function(err, client, done) {
-      if(err) {
-        return console.error('error fetching client from pool', err);
-      }
-      client.query(queryString, queryValues, function(err, result) {
-        done();  //release the client back to the pool
-        if(err) {
-          return console.error('error running query', err, queryString);
-        }
-      });
-    });
+    pool.query(queryString, queryValues)
+      .then(() => res.end())
+      .catch((err) => console.error('error running query', err, queryString));
   });
 
 };

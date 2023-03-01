@@ -6,7 +6,7 @@ const parseString = require('xml2js').parseString;
 
 exports.setApp = function (app, pool) {
 
-  // TODO this is breaking because I am not registered as an associate - fix somehow 
+  // TODO this is breaking because I am not registered as an associate - fix somehow
   // Testbooks main page
   app.get('/awsTextbooks', function (req, res) {
     var origQuery = req.originalUrl.substring(14);
@@ -97,23 +97,16 @@ exports.setApp = function (app, pool) {
     var condition = searchParams["condition"];
     condition = condition.replace(/[^A-Za-z]/g, "");
     var queryString = "SELECT users, price, condition FROM textbooks WHERE";
-    queryString += util.format(" isbn='%s'", isbn);
+    queryString += util.format(" isbn=$1");
+    const queryValues = [isbn];
     if (condition.length != 0) {
-      queryString += util.format(" AND condition='%s'", condition);
+      queryString += util.format(" AND condition=$2");
+      queryValues.push(condition);
     }
     queryString += " AND sold=false ORDER BY price ASC;";
-    pool.connect(function(err, client, done) {
-      if(err) {
-        return console.error('error fetching client from pool', err);
-      }
-      client.query(queryString, function(err, result) {
-        done();  //release the client back to the pool
-        if(err) {
-          return console.error('error running query', err);
-        }
-        res.send(result.rows);
-      });
-    });
+    pool.query(queryString, queryValues)
+      .then((result) => res.send(result.rows))
+      .catch((err) => console.error('error running query', err, queryString));
   });
 
   app.get('/getUserTextbooks', function (req, res) {
@@ -123,21 +116,11 @@ exports.setApp = function (app, pool) {
       res.status(400).send();
       return;
     }
-    var queryString = "SELECT isbn, price, adddate, id FROM textbooks WHERE";
-    queryString += util.format(" users='%s' AND sold=false", user);
-    queryString += " ORDER BY adddate DESC;";
-    pool.connect(function(err, client, done) {
-      if(err) {
-        return console.error('error fetching client from pool', err);
-      }
-      client.query(queryString, function(err, result) {
-        done();  //release the client back to the pool
-        if(err) {
-          return console.error('error running query', err);
-        }
-        res.send(result.rows);
-      });
-    });
+    const queryString = "SELECT isbn, price, adddate, id FROM textbooks WHERE users=$1 AND sold=false ORDER BY adddate DESC;";
+    const queryValues = [user];
+    pool.query(queryString, queryValues)
+      .then((result) => res.send(result.rows))
+      .catch((err) => console.error('error running query', err, queryString));
   });
 
   app.get('/removeTextbook', function (req, res) {
@@ -149,21 +132,11 @@ exports.setApp = function (app, pool) {
       res.status(400).send();
       return;
     }
-    var queryString = util.format("UPDATE textbooks SET sold=%s WHERE id=%d;", sold, id);
-    pool.connect(function(err, client, done) {
-      if(err) {
-        return console.error('error fetching client from pool', err);
-        res.status(400).send();
-      }
-      client.query(queryString, function(err, result) {
-        done();  //release the client back to the pool
-        if(err) {
-          return console.error('error running query', err);
-          res.status(400).send();
-        }
-        res.send(true);
-      });
-    });
+    const queryString = util.format("UPDATE textbooks SET sold=$1 WHERE id=$2;", );
+    const queryValues = [sold, id];
+    pool.query(queryString, queryValues)
+      .then((result) => res.send(result.rows))
+      .catch((err) => console.error('error running query', err, queryString));
   });
 
   app.get('/postTextbooks', function (req, res) {
@@ -177,21 +150,11 @@ exports.setApp = function (app, pool) {
       res.status(400).send();
       return;
     }
-    var queryString = util.format("INSERT INTO textbooks VALUES (DEFAULT, %d, '%s', %d, '%s', false, DEFAULT);", parseInt(isbn), users, parseFloat(price), condition);
-    pool.connect(function(err, client, done) {
-      if(err) {
-        return console.error('error fetching client from pool', err);
-        res.status(400).send();
-      }
-      client.query(queryString, function(err, result) {
-        done();  //release the client back to the pool
-        res.send(true);
-        if(err) {
-          return console.error('error running query', err);
-          res.status(400).send();
-        }
-      });
-    });
+    const queryString = "INSERT INTO textbooks VALUES (DEFAULT, $1, $2, $3, $4, false, DEFAULT);";
+    const queryValues = [parseInt(isbn), users, parseFloat(price), condition];
+    pool.query(queryString, queryValues)
+      .then(() => res.send(true))
+      .catch((err) => console.error('error running query', err, queryString));
   });
 
 }
