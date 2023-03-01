@@ -11,9 +11,7 @@
   "dependencies": {
     "@blueprintjs/core": "^4.16.3",
     "react-transition-group": "^4.4.5",
-    "victory": "^36.6.8"
-  },
-  "devDependencies": {
+    "victory": "^36.6.8",
     "@aws-sdk/client-s3": "^3.272.0",
     "babel-loader": "^9.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
