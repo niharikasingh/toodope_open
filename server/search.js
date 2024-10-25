@@ -9,9 +9,8 @@ exports.setApp = function (app, pool, urlencodedParser) {
 
   // initialize jobs queue used to anonymize uploads
   var jobs = kue.createQueue({
-    // The Heroku Redis instance uses the "rediss:" protocol, but in env variables,
-    // I've written this as "redis:".
-    // This version of kue and node-redis doesn't support "rediss:".
+    // Using the connection instructions from
+    // https://devcenter.heroku.com/articles/connecting-heroku-redis#connecting-in-node-js.
     redis: {
       createClientFactory: () => redis.createClient({
         url: process.env.REDIS_URL,
