@@ -2,6 +2,7 @@ const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const kue = require('kue');
 const pythonShell = require('python-shell');
+const redis = require("redis");
 const util = require('util');
 
 exports.setApp = function (app, pool, urlencodedParser) {
@@ -11,7 +12,14 @@ exports.setApp = function (app, pool, urlencodedParser) {
     // The Heroku Redis instance uses the "rediss:" protocol, but in env variables,
     // I've written this as "redis:".
     // This version of kue and node-redis doesn't support "rediss:".
-    redis: process.env.REDIS_URL,
+    redis: {
+      createClientFactory: () => redis.createClient({
+        url: process.env.REDIS_URL,
+        tls: {
+          rejectUnauthorized: false
+        }
+      }),
+    }
   });
 
   app.get('/searchOutlines', function (req, res) {
